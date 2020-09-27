@@ -1,0 +1,69 @@
+[[plugins]]
+repo = 'prabirshrestha/vim-lsp'
+hook_add = '''
+    let g:lsp_diagnostics_echo_cursor=1
+
+'''
+
+[[plugins]]
+repo = 'mattn/vim-lsp-settings'
+merged = 0
+hook_add = '''
+    let g:lsp_settings_servers_dir='~/vim-lsp-settings/servers'
+    command! Def sp | LspDefinition
+    command! Dec sp | LspDeclaration
+'''
+
+[[plugins]]
+repo = 'vim-airline/vim-airline'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+#[[plugins]]
+#repo = 'scrooloose/nerdtree'
+#hook_add = '''
+#    let g:NERDTreeShowHidden=1
+#    autocmd VimEnter * NERDTree "start up NERDTree
+#    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+#'''
+
+#[[plugins]]
+#repo = 'jistr/vim-nerdtree-tabs'
+#hook_add = '''
+#    map <C-e> <plug>NERDTreeTabsToggle<CR>
+#    let g:nerdtree_tabs_open_on_console_startup=1
+#'''
+#depends = ['nerdtree']
+
+[[plugins]]
+repo = 'tpope/vim-vinegar'
+hook_add = '''
+    let g:NERDTreeHijackNetrw=0
+'''
+
+[[plugins]]
+repo = 'vhdirk/vim-cmake'
+on_ft = ['c', 'cpp']
+hook_source = '''
+    nmap <leader>dox :Dox<CR>
+'''
+
+[[plugins]]
+repo = 'cespare/vim-toml'
+on_ft = ['toml']
+
+[[plugins]]
+repo = 'sakhnik/nvim-gdb'
+
+[[plugins]]
+repo = 'mattn/emmet-vim'
+
+[[plugins]]
+repo = 'vim-scripts/nsis.vim'
+
+[[plugins]]
+repo = 'simeji/winresizer'
+
+[[plugins]]
+repo = 'mattn/ctrlp-matchfuzzy'
