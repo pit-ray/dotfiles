@@ -66,4 +66,10 @@ repo = 'vim-scripts/nsis.vim'
 repo = 'simeji/winresizer'
 
 [[plugins]]
+repo = 'ctrlpvim/ctrlp.vim'
+
+[[plugins]]
 repo = 'mattn/ctrlp-matchfuzzy'
+hook_add = '''
+    let g:ctrlp_match_func={'match': 'ctrlp_matchfuzzy#matcher'}
+'''
