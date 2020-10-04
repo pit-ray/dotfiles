@@ -31,7 +31,7 @@ let g:lsp_diagnostics_echo_cursor = 1
 
 "vim-lsp-settings
 let g:lsp_settings_servers_dir = $VIMHOME . '/vim-lsp-settings/servers'
-command! Def sp | LspDefinitio0n
+command! Def sp | LspDefinition
 command! Dec sp | LspDeclaration
 
 "vim-vinegar
