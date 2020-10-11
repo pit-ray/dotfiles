@@ -12,18 +12,19 @@ if empty(glob($VIMHOME . '/autoload/plug.vim'))
 endif
 
 call plug#begin($VIMHOME . '/plugged')
-Plug 'prabirshrestha/vim-lsp'
+Plug 'cespare/vim-toml', {'for': 'toml'}
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'mattn/emmet-vim', {'for': 'html'}
 Plug 'mattn/vim-lsp-settings'
-Plug 'vim-airline/vim-airline'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'sakhnik/nvim-gdb', {'for': ['c', 'cpp']}
+Plug 'simeji/winresizer'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'vhdirk/vim-cmake', {'for': ['c', 'cpp']}
-Plug 'cespare/vim-toml', {'for': 'toml'}
-Plug 'sakhnik/nvim-gdb', {'for': ['c', 'cpp']}
-Plug 'mattn/emmet-vim', {'for': 'html'}
-Plug 'vim-scripts/nsis.vim', {'for': 'nsi'}
-Plug 'simeji/winresizer'
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
 call plug#end()
 
 "vim-lsp
@@ -31,14 +32,19 @@ let g:lsp_diagnostics_echo_cursor = 1
 
 "vim-lsp-settings
 let g:lsp_settings_servers_dir = $VIMHOME . '/vim-lsp-settings/servers'
-command! Def sp | LspDefinition
-command! Dec sp | LspDeclaration
+command! Def sp | LspDefinition | <cr>
+command! Dec sp | LspDeclaration | <cr>|
 
 "vim-vinegar
 "let g:NERDTreeHijackNetrw = 0
 
 "ctrlp
 let g:ctrlp_working_path_mode = 'ra'
+
+"vim-easy-align
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+command! -range Eqga <line1>,<line2>EasyAlign<Space>-=
 
 "scheme
 if empty(glob($VIMHOME . '/colors/hybrid.vim'))
