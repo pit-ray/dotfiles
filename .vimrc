@@ -17,6 +17,8 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'mattn/emmet-vim', {'for': 'html'}
 Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'sakhnik/nvim-gdb', {'for': ['c', 'cpp']}
 Plug 'simeji/winresizer'
@@ -33,12 +35,13 @@ command! Update so<space>$MYVIMRC | PlugInstall
 let g:lsp_diagnostics_echo_cursor = 1
 
 "vim-lsp-settings
-let g:lsp_settings_servers_dir = $VIMHOME . '/vim-lsp-settings/servers'
+let g:lsp_settings_root_markers = ['.git']
+let g:lsp_settings_servers_dir  = $VIMHOME . '/vim-lsp-settings/servers'
 command! Def sp | LspDefinition
 command! Dec sp | LspDeclaration
 
 "vim-vinegar
-"let g:NERDTreeHijackNetrw = 0
+let g:NERDTreeHijackNetrw = 0
 
 "ctrlp
 let g:ctrlp_working_path_mode = 'ra'
@@ -59,12 +62,11 @@ if has('gui_running')
         autocmd Colorscheme * highlight FullWidthSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
         autocmd VimEnter,WinEnter * match FullWidthSpace /　/
     endif
-    colorscheme hybrid
 else
     let g:hybrid_custom_term_colors = 1
     let g:hybrid_reduced_contrast   = 1
-    colorscheme hybrid
 endif
+colorscheme hybrid
 
 set hlsearch
 set showmatch
