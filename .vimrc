@@ -8,7 +8,7 @@ let mapleader = "\<space>"
 let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
 if empty(glob($VIMHOME . '/autoload/plug.vim'))
     exe('term curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    autocmd VimEnter * PlugInstall --sync | so $MYVIMRC
 endif
 
 call plug#begin($VIMHOME . '/plugged')
@@ -27,13 +27,15 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
 call plug#end()
 
+command! Update so<space>$MYVIMRC | PlugInstall
+
 "vim-lsp
 let g:lsp_diagnostics_echo_cursor = 1
 
 "vim-lsp-settings
 let g:lsp_settings_servers_dir = $VIMHOME . '/vim-lsp-settings/servers'
-command! Def sp | LspDefinition | <cr>
-command! Dec sp | LspDeclaration | <cr>|
+command! Def sp | LspDefinition
+command! Dec sp | LspDeclaration
 
 "vim-vinegar
 "let g:NERDTreeHijackNetrw = 0
