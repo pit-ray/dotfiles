@@ -112,3 +112,47 @@ noremap <c-j> <c-w><c-j>
 noremap <c-k> <c-w><c-k>
 noremap <c-l> <c-w><c-l>
 command! Termp terminal powershell
+
+"my functions
+function! StartNewLineWithRemoveSP() abort
+    let l:startcol = col('.')
+    normal w
+    let l:spnum = col('.') - l:startcol - 1
+    if l:spnum > 0
+        for a in range(l:spnum)
+            normal X
+        endfor
+    endif
+    execute "normal i\<cr>\<esc>"
+endfunction
+
+"In C/C++
+"[from] void myfunction(int a, int b) ;
+"[to]   void myfunction(
+"           int a,
+"           int b) ;
+function! AlignArgs() abort
+    let l:startq = '('
+    let l:endq   = ')'
+    let l:delim  = ','
+
+    call cursor(0, 1)
+    call search(l:startq)
+    if searchpair(l:startq, '', l:endq, 'n') < 1
+        echo "not found pair"
+    endif
+    call StartNewLineWithRemoveSP()
+
+    while 1
+        let [l:plnum, l:pcol] = searchpairpos(l:startq, '', l:endq, 'n')
+        let [l:dlnum, l:dcol] = searchpos(l:delim, 'n')
+        if l:dlnum == 0 || l:dcol == 0 || l:dlnum > l:plnum || l:dcol > l:pcol
+            break
+        endif
+        call cursor(l:dlnum, l:dcol)
+        call StartNewLineWithRemoveSP()
+    endwhile
+endfunction
+
+noremap <leader>a :call AlignArgs()<cr>
+
