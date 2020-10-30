@@ -1,4 +1,5 @@
 "encoding
+set fileformat=unix,dos,mac
 set nocompatible
 set encoding=utf-8
 set fileencodings=utf-8,cp932,euc-jp,iso-20220-jp,default,latin
