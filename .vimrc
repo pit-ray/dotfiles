@@ -1,7 +1,7 @@
 "encoding
 set nocompatible
 set encoding=utf-8
-set fileencodings=utf-8,cp932,euc-jp,iso-20220-jp,default,latin
+set fileencodings=utf-8,euc-jp,cp932,iso-20220-jp,default,latin
 scriptencoding
 
 let mapleader = "\<space>"
@@ -119,7 +119,8 @@ tnoremap <c-l> <c-w><c-l>
 
 command! Termp terminal powershell
 
-"my functions
+"My functions
+"-------------------------------------------------
 function! StartNewLineWithRemoveSP() abort
     let l:startcol = col('.')
     normal w
@@ -159,6 +160,26 @@ function! AlignArgs() abort
         call StartNewLineWithRemoveSP()
     endwhile
 endfunction
-
 noremap <leader>a :call AlignArgs()<cr>
+"--------------------------------------------------
+"
+function! InsertText(insert_text) abort
+    execute ":normal i" . a:insert_text
+endfunction
 
+function! CppTemplate() abort
+    call InsertText("#include <iostream>\n\nint main()\n{\n\n}")
+endfunction
+command! TemplateCpp :call CppTemplate()<cr>
+
+function! CTemplate() abort
+    call InsertText("#include <stdio.h>\n\nint main()\n{\n\n}")
+endfunction
+command! TemplateC :call CTemplate()<cr>
+
+function! HTemplate() abort
+    let l:filename = substitute(toupper(expand("%")), "\\.", "_", "g")
+    call InsertText("#ifndef _" . l:filename . "\n#define _" . l:filename . "\n\n#endif")
+endfunction
+command! TemplateH :call HTemplate()<cr>
+"--------------------------------------------------
