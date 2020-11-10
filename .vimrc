@@ -167,19 +167,20 @@ function! InsertText(insert_text) abort
     execute ":normal i" . a:insert_text
 endfunction
 
-function! CppTemplate() abort
-    call InsertText("#include <iostream>\n\nint main()\n{\n\n}")
-endfunction
-command! TemplateCpp :call CppTemplate()<cr>
+function! InsertTemplate(type) abort
+    let l:lower_type = tolower(a:type)
 
-function! CTemplate() abort
-    call InsertText("#include <stdio.h>\n\nint main()\n{\n\n}")
+    if l:lower_type == "cpp"
+        call InsertText("#include <iostream>\n\nint main()\n{\n\n}")
+    elseif l:lower_type == "c"
+        call InsertText("#include <stdio.h>\n\nint main()\n{\n\n}")
+    elseif l:lower_type == "h" || l:lower_type == "hpp"
+        let l:filename = substitute(toupper(expand("%")), "\\.", "_", "g")
+        call InsertText("#ifndef _" . l:filename . "\n#define _" . l:filename . "\n\n#endif")
+    else
+        echo "not supported"
+    endif
 endfunction
-command! TemplateC :call CTemplate()<cr>
 
-function! HTemplate() abort
-    let l:filename = substitute(toupper(expand("%")), "\\.", "_", "g")
-    call InsertText("#ifndef _" . l:filename . "\n#define _" . l:filename . "\n\n#endif")
-endfunction
-command! TemplateH :call HTemplate()<cr>
+command! -nargs=1 Template :call InsertTemplate(<f-args>)<cr>
 "--------------------------------------------------
