@@ -175,7 +175,7 @@ function! InsertTemplate(type) abort
     elseif l:lower_type == "c"
         call InsertText("#include <stdio.h>\n\nint main()\n{\n\n}")
     elseif l:lower_type == "h" || l:lower_type == "hpp"
-        let l:filename = substitute(toupper(expand("%")), "\\.", "_", "g")
+        let l:filename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
         call InsertText("#ifndef _" . l:filename . "\n#define _" . l:filename . "\n\n#endif")
     else
         echo "not supported"
