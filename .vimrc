@@ -4,6 +4,9 @@ set nocompatible
 set fileencodings=utf-8,cp932,euc-jp,iso-20220-jp,default,latin
 scriptencoding
 
+"enable dgb debugger
+"packadd termdebug
+
 let mapleader = "\<space>"
 let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
 if empty(glob($VIMHOME . '/autoload/plug.vim'))
@@ -20,7 +23,6 @@ Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
-Plug 'sakhnik/nvim-gdb', {'for': ['c', 'cpp']}
 Plug 'simeji/winresizer'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
@@ -31,6 +33,7 @@ call plug#end()
 
 command! Update so<space>$MYVIMRC | PlugInstall
 
+"Options---------------------
 "vim-lsp
 let g:lsp_diagnostics_echo_cursor = 1
 
@@ -51,6 +54,8 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 command! -range Eqga <line1>,<line2>EasyAlign<Space>-=
 
+
+"------------------
 "scheme
 if empty(glob($VIMHOME . '/colors/hybrid.vim'))
     exe('term curl -fLo ' . $VIMHOME . '/colors/hybrid.vim --create-dirs https://raw.githubusercontent.com/w0ng/vim-hybrid/master/colors/hybrid.vim')
@@ -112,12 +117,16 @@ noremap <c-j> <c-w><c-j>
 noremap <c-k> <c-w><c-k>
 noremap <c-l> <c-w><c-l>
 
-tnoremap <c-h> <c-w><c-h>
-tnoremap <c-j> <c-w><c-j>
-tnoremap <c-k> <c-w><c-k>
-tnoremap <c-l> <c-w><c-l>
+if has('terminal')
+    tnoremap <c-h> <c-w><c-h>
+    tnoremap <c-j> <c-w><c-j>
+    tnoremap <c-k> <c-w><c-k>
+    tnoremap <c-l> <c-w><c-l>
+endif
 
-command! Termp terminal powershell
+if has('win32')
+    set shell=powershell
+endif
 
 "My functions
 "-------------------------------------------------
