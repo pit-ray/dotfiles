@@ -54,7 +54,6 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 command! -range Eqga <line1>,<line2>EasyAlign<Space>-=
 
-
 "------------------
 "scheme
 if empty(glob($VIMHOME . '/colors/hybrid.vim'))
@@ -107,6 +106,8 @@ set backspace=indent,eol,start
 set clipboard=unnamed,autoselect
 set wildmenu
 set wildmode=list:longest,full
+
+set vb t_vb=
 
 "infinity undo
 set undodir=$VIMHOME
