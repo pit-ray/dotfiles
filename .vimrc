@@ -18,6 +18,7 @@ call plug#begin($VIMHOME . '/plugged')
 Plug 'cespare/vim-toml', {'for': 'toml'}
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'easymotion/vim-easymotion'
 Plug 'mattn/emmet-vim', {'for': 'html'}
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
@@ -107,7 +108,7 @@ set clipboard=unnamed,autoselect
 set wildmenu
 set wildmode=list:longest,full
 
-set vb t_vb=
+set novisualbell t_vb=
 
 "infinity undo
 set undodir=$VIMHOME
