@@ -5,20 +5,20 @@ set fileencodings=utf-8,cp932,euc-jp,iso-20220-jp,default,latin
 scriptencoding
 
 "enable dgb debugger
-"packadd termdebug
+packadd termdebug
 
 let mapleader = "\<space>"
 let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
 if empty(glob($VIMHOME . '/autoload/plug.vim'))
     exe('term curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
-    autocmd VimEnter * PlugInstall --sync | so $MYVIMRC
+    au! VimEnter * PlugInstall --sync | so $MYVIMRC
 endif
 
 call plug#begin($VIMHOME . '/plugged')
+Plug 'skywind3000/asyncrun.vim'
 Plug 'cespare/vim-toml', {'for': 'toml'}
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/vim-easy-align'
-Plug 'easymotion/vim-easymotion'
 Plug 'mattn/emmet-vim', {'for': 'html'}
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
@@ -33,6 +33,7 @@ Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
 call plug#end()
 
 command! Update so<space>$MYVIMRC | PlugInstall
+command! So so<space>$MYVIMRC
 
 "Options---------------------
 "vim-lsp
@@ -64,8 +65,8 @@ syntax enable
 set background=dark
 if has('gui_running')
     if has('syntax')
-        autocmd Colorscheme * highlight FullWidthSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-        autocmd VimEnter,WinEnter * match FullWidthSpace /　/
+        au! Colorscheme * highlight FullWidthSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+        au! VimEnter,WinEnter * match FullWidthSpace /　/
     endif
 else
     let g:hybrid_custom_term_colors = 1
@@ -86,7 +87,7 @@ set columns=128
 "disable gui toolbar and menubar
 set guioptions-=m
 set guioptions-=T
-set guifont=Consolas:h10
+set guifont=Consolas:h8
 
 "indent
 filetype plugin indent on
@@ -108,7 +109,7 @@ set clipboard=unnamed,autoselect
 set wildmenu
 set wildmode=list:longest,full
 
-set novisualbell t_vb=
+set novb t_vb=
 
 "infinity undo
 set undodir=$VIMHOME
@@ -129,6 +130,34 @@ endif
 if has('win32')
     set shell=powershell
 endif
+
+let g:termdebug_use_prompt = 0
+noremap <leader>b :Break<cr>
+noremap <f5> :Continue<cr>
+noremap <leader>e :Evaluate<cr>
+noremap <leader>g :Gdb<cr>
+noremap <leader>s :Step<cr>
+noremap <leader>o :Over<cr>
+noremap <leader>q :Gdb<cr><esc>iquit<cr>
+noremap <leader>r :Run<cr><esc>:Source<cr>
+
+
+let g:previous_word_under_cursor = ''
+function! EvaluateUnderCursor() abort
+    if exists(':Evaluate')
+        let l:word = expand('<cword>')
+        if !empty(l:word) && l:word != ' '
+            if g:previous_word_under_cursor != l:word
+                Evaluate
+                let g:previous_word_under_cursor = l:word
+            endif
+        endif
+    endif
+endfunction
+
+set updatetime=700
+au! CursorHold * call EvaluateUnderCursor()
+"au! CursorMoved * call EvaluateUnderCursor()
 
 "My functions
 "-------------------------------------------------
@@ -195,3 +224,6 @@ endfunction
 
 command! -nargs=1 Template :call InsertTemplate(<f-args>)<cr>
 "--------------------------------------------------
+"
+
+command! GUINormal :AsyncRun win-vind -f change_to_normal
