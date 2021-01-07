@@ -33,7 +33,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
 call plug#end()
 
-"enable dgb debugger
+"enable GDB debugger
 packadd termdebug
 
 command! Update so<space>$MYVIMRC | PlugInstall
