@@ -114,7 +114,7 @@ set novb t_vb=
 "infinity undo
 set undodir=$VIMHOME
 
-"bindings
+"My bindings
 noremap <c-h> <c-w><c-h>
 noremap <c-j> <c-w><c-j>
 noremap <c-k> <c-w><c-k>
@@ -141,7 +141,7 @@ noremap <leader>o :Over<cr>
 noremap <leader>q :Gdb<cr><esc>iquit<cr>
 noremap <leader>r :Run<cr><esc>:Source<cr>
 
-
+"My functions ---------------------------
 let g:previous_word_under_cursor = ''
 function! EvaluateUnderCursor() abort
     if exists(':Evaluate')
@@ -157,10 +157,9 @@ endfunction
 
 set updatetime=700
 au! CursorHold * call EvaluateUnderCursor()
-"au! CursorMoved * call EvaluateUnderCursor()
 
-"My functions
-"-------------------------------------------------
+
+"Utilities --------------------------------
 function! StartNewLineWithRemoveSP() abort
     let l:startcol = col('.')
     normal w
@@ -201,8 +200,13 @@ function! AlignArgs() abort
     endwhile
 endfunction
 noremap <leader>a :call AlignArgs()<cr>
-"--------------------------------------------------
-"
+
+"In C/C++
+"Template Generator
+"-Support
+":Template CPP
+":Template C
+":Template H
 function! InsertText(insert_text) abort
     execute ":normal i" . a:insert_text
 endfunction
@@ -223,7 +227,6 @@ function! InsertTemplate(type) abort
 endfunction
 
 command! -nargs=1 Template :call InsertTemplate(<f-args>)<cr>
-"--------------------------------------------------
-"
 
+"win-vind (https://pit-ray.github.io/win-vind/)
 command! GUINormal :AsyncRun win-vind -f change_to_normal
