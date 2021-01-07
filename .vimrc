@@ -1,13 +1,14 @@
+" => Encoding settings -----------------------------------------------{{{1
 set encoding=utf-8
 set fileformats=unix,dos,mac
 set nocompatible
 set fileencodings=utf-8,cp932,euc-jp,iso-20220-jp,default,latin
 scriptencoding
 
-"enable dgb debugger
-packadd termdebug
-
+" => Common bindings --------------------------------------------------{{{1
 let mapleader = "\<space>"
+
+" => Install plugins --------------------------------------------------{{{1
 let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
 if empty(glob($VIMHOME . '/autoload/plug.vim'))
     exe('term curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
@@ -15,7 +16,6 @@ if empty(glob($VIMHOME . '/autoload/plug.vim'))
 endif
 
 call plug#begin($VIMHOME . '/plugged')
-Plug 'skywind3000/asyncrun.vim'
 Plug 'cespare/vim-toml', {'for': 'toml'}
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/vim-easy-align'
@@ -25,6 +25,7 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'simeji/winresizer'
+Plug 'skywind3000/asyncrun.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
 Plug 'vhdirk/vim-cmake', {'for': ['c', 'cpp']}
@@ -32,10 +33,13 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
 call plug#end()
 
+"enable dgb debugger
+packadd termdebug
+
 command! Update so<space>$MYVIMRC | PlugInstall
 command! So so<space>$MYVIMRC
 
-"Options---------------------
+" => Plugin Options -------------------------------------------------{{{1
 "vim-lsp
 let g:lsp_diagnostics_echo_cursor = 1
 
@@ -56,8 +60,7 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 command! -range Eqga <line1>,<line2>EasyAlign<Space>-=
 
-"------------------
-"scheme
+" => Color Scheme --------------------------------------------------{{{1
 if empty(glob($VIMHOME . '/colors/hybrid.vim'))
     exe('term curl -fLo ' . $VIMHOME . '/colors/hybrid.vim --create-dirs https://raw.githubusercontent.com/w0ng/vim-hybrid/master/colors/hybrid.vim')
 endif
@@ -74,47 +77,52 @@ else
 endif
 colorscheme hybrid
 
-set hlsearch
-set showmatch
-set ruler
-set number
-set showcmd
-set list "show invisible char
-set listchars=tab:>-,trail:. "tab - space .
-set lines=32
-set columns=128
-
-"disable gui toolbar and menubar
-set guioptions-=m
-set guioptions-=T
-set guifont=Consolas:h8
+" => Native Common Settings ----------------------------------------------{{{1
+set hlsearch                        "show highlight
+set showmatch                       "show matched brackets
+set ruler                           "show cursor position
+set number                          "show line number
+set showcmd                         "show inputting commands
+set list                            "show invisible char
+set listchars=tab:>-,trail:.        "tab - space .
+set lines=32                        "initial window height
+set columns=128                     "initial window width
 
 "indent
-filetype plugin indent on
-set autoindent
-set expandtab
-set tabstop=4
-set shiftwidth=4
-set backspace=2
-"set foldmethod=indent
+filetype plugin indent on           "detect filetype
+set autoindent                      "automatic indent
+set expandtab                       "convert tab to space
+set tabstop=4                       "tab = 4 spaces
+set shiftwidth=4                    "the number of space in auto indent
+set foldmethod=marker               "fold with maker (e.g. {{{1)
+set foldlevel=100                   "initial fold mode
 
 "other
-set nowrapscan
-set nowrap
+set nowrapscan                      "There is End of search
+set nowrap                          "not wrap a long line
 
-set nobackup
-set noswapfile
-set backspace=indent,eol,start
-set clipboard=unnamed,autoselect
-set wildmenu
-set wildmode=list:longest,full
+set nobackup                        "not make backup files
+set noswapfile                      "not make swap files
+set backspace=indent,eol,start      "behavior of back space
+set clipboard=unnamed,autoselect    "copy to OS's clipboard
+set wildmenu                        "more informational completion
+set wildmode=list:longest,full      "wildmenu's behavior
 
-set novb t_vb=
+set novb t_vb=                      "disable all beep
+set noerrorbells                    "disable error beep
 
-"infinity undo
-set undodir=$VIMHOME
+if has('win32')
+    set shell=powershell
+endif
 
-"My bindings
+set undodir=$VIMHOME                "infinity undo
+
+" => Native GUI settings -------------------------------------------------{{{1
+set guioptions-=m                   "disable gui menubar
+set guioptions-=T                   "disable gui toolbar
+set guifont=Consolas:h8
+
+" => My bindings ---------------------------------------------------------{{{1
 noremap <c-h> <c-w><c-h>
 noremap <c-j> <c-w><c-j>
 noremap <c-k> <c-w><c-k>
@@ -127,10 +135,6 @@ if has('terminal')
     tnoremap <c-l> <c-w><c-l>
 endif
 
-if has('win32')
-    set shell=powershell
-endif
-
 let g:termdebug_use_prompt = 0
 noremap <leader>b :Break<cr>
 noremap <f5> :Continue<cr>
@@ -141,7 +145,7 @@ noremap <leader>o :Over<cr>
 noremap <leader>q :Gdb<cr><esc>iquit<cr>
 noremap <leader>r :Run<cr><esc>:Source<cr>
 
-"My functions ---------------------------
+" => My functions  ---------------------------------------------------------{{{1
 let g:previous_word_under_cursor = ''
 function! EvaluateUnderCursor() abort
     if exists(':Evaluate')
@@ -159,7 +163,7 @@ set updatetime=700
 au! CursorHold * call EvaluateUnderCursor()
 
 
-"Utilities --------------------------------
+"Utilities
 function! StartNewLineWithRemoveSP() abort
     let l:startcol = col('.')
     normal w
