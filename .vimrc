@@ -33,7 +33,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
 call plug#end()
 
-"enable GDB debugger
+"enable dgb debugger
 packadd termdebug
 
 command! Update so<space>$MYVIMRC | PlugInstall
@@ -234,3 +234,11 @@ command! -nargs=1 Template :call InsertTemplate(<f-args>)<cr>
 
 "win-vind (https://pit-ray.github.io/win-vind/)
 command! GUINormal :AsyncRun win-vind -f change_to_normal
+
+function! Dos2Unix() abort
+    edit! ++ff=unix
+    execute "%s///ge"
+    execute "%s/\r//ge"
+endfunction
+
+command! Dos2Unix :call Dos2Unix()
