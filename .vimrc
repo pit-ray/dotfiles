@@ -1,14 +1,13 @@
-" => Encoding settings -----------------------------------------------{{{1
 set encoding=utf-8
 set fileformats=unix,dos,mac
 set nocompatible
 set fileencodings=utf-8,cp932,euc-jp,iso-20220-jp,default,latin
 scriptencoding
 
-" => Common bindings --------------------------------------------------{{{1
-let mapleader = "\<space>"
+"enable dgb debugger
+packadd termdebug
 
-" => Install plugins --------------------------------------------------{{{1
+let mapleader = "\<space>"
 let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
 if empty(glob($VIMHOME . '/autoload/plug.vim'))
     exe('term curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
@@ -18,10 +17,10 @@ endif
 call plug#begin($VIMHOME . '/plugged')
 Plug 'cespare/vim-toml', {'for': 'toml'}
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/vim-easy-align'
 Plug 'mattn/emmet-vim', {'for': 'html'}
 Plug 'mattn/vim-lsp-settings'
+Plug 'mhinz/vim-startify'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
@@ -34,13 +33,10 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
 call plug#end()
 
-"enable dgb debugger
-packadd termdebug
-
 command! Update so<space>$MYVIMRC | PlugInstall
 command! So so<space>$MYVIMRC
 
-" => Plugin Options -------------------------------------------------{{{1
+"Options---------------------
 "vim-lsp
 let g:lsp_diagnostics_echo_cursor = 1
 
@@ -61,7 +57,8 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 command! -range Eqga <line1>,<line2>EasyAlign<Space>-=
 
-" => Color Scheme --------------------------------------------------{{{1
+"------------------
+"scheme
 if empty(glob($VIMHOME . '/colors/hybrid.vim'))
     exe('term curl -fLo ' . $VIMHOME . '/colors/hybrid.vim --create-dirs https://raw.githubusercontent.com/w0ng/vim-hybrid/master/colors/hybrid.vim')
 endif
@@ -78,52 +75,47 @@ else
 endif
 colorscheme hybrid
 
-" => Native Common Settings ----------------------------------------------{{{1
-set hlsearch                        "show highlight
-set showmatch                       "show matched brackets
-set ruler                           "show cursor position
-set number                          "show line number
-set showcmd                         "show inputting commands
-set list                            "show invisible char
-set listchars=tab:>-,trail:.        "tab - space .
-set lines=32                        "initial window height
-set columns=128                     "initial window width
+set hlsearch
+set showmatch
+set ruler
+set number
+set showcmd
+set list "show invisible char
+set listchars=tab:>-,trail:. "tab - space .
+set lines=32
+set columns=128
 
-"indent
-filetype plugin indent on           "detect filetype
-set autoindent                      "automatic indent
-set expandtab                       "convert tab to space
-set tabstop=4                       "tab = 4 spaces
-set shiftwidth=4                    "the number of space in auto indent
-set foldmethod=marker               "fold with maker (e.g. {{{1)
-set foldlevel=100                   "initial fold mode
-
-"other
-set nowrapscan                      "There is End of search
-set nowrap                          "not wrap a long line
-
-set nobackup                        "not make backup files
-set noswapfile                      "not make swap files
-set backspace=indent,eol,start      "behavior of back space
-set clipboard=unnamed,autoselect    "copy to OS's clipboard
-set wildmenu                        "more informational completion
-set wildmode=list:longest,full      "wildmenu's behavior
-
-set novb t_vb=                      "disable all beep
-set noerrorbells                    "disable error beep
-
-if has('win32')
-    set shell=powershell
-endif
-
-set undodir=$VIMHOME                "infinity undo
-
-" => Native GUI settings -------------------------------------------------{{{1
-set guioptions-=m                   "disable gui menubar
-set guioptions-=T                   "disable gui toolbar
+"disable gui toolbar and menubar
+set guioptions-=m
+set guioptions-=T
 set guifont=Consolas:h8
 
-" => My bindings ---------------------------------------------------------{{{1
+"indent
+filetype plugin indent on
+set autoindent
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set backspace=2
+"set foldmethod=indent
+
+"other
+set nowrapscan
+set nowrap
+
+set nobackup
+set noswapfile
+set backspace=indent,eol,start
+set clipboard=unnamed,autoselect
+set wildmenu
+set wildmode=list:longest,full
+
+set novb t_vb=
+
+"infinity undo
+set undodir=$VIMHOME
+
+"bindings
 noremap <c-h> <c-w><c-h>
 noremap <c-j> <c-w><c-j>
 noremap <c-k> <c-w><c-k>
@@ -136,6 +128,10 @@ if has('terminal')
     tnoremap <c-l> <c-w><c-l>
 endif
 
+if has('win32')
+    set shell=powershell
+endif
+
 let g:termdebug_use_prompt = 0
 noremap <leader>b :Break<cr>
 noremap <f5> :Continue<cr>
@@ -146,7 +142,7 @@ noremap <leader>o :Over<cr>
 noremap <leader>q :Gdb<cr><esc>iquit<cr>
 noremap <leader>r :Run<cr><esc>:Source<cr>
 
-" => My functions  ---------------------------------------------------------{{{1
+
 let g:previous_word_under_cursor = ''
 function! EvaluateUnderCursor() abort
     if exists(':Evaluate')
@@ -162,9 +158,10 @@ endfunction
 
 set updatetime=700
 au! CursorHold * call EvaluateUnderCursor()
+"au! CursorMoved * call EvaluateUnderCursor()
 
-
-"Utilities
+"My functions
+"-------------------------------------------------
 function! StartNewLineWithRemoveSP() abort
     let l:startcol = col('.')
     normal w
@@ -205,13 +202,8 @@ function! AlignArgs() abort
     endwhile
 endfunction
 noremap <leader>a :call AlignArgs()<cr>
-
-"In C/C++
-"Template Generator
-"-Support
-":Template CPP
-":Template C
-":Template H
+"--------------------------------------------------
+"
 function! InsertText(insert_text) abort
     execute ":normal i" . a:insert_text
 endfunction
@@ -232,14 +224,7 @@ function! InsertTemplate(type) abort
 endfunction
 
 command! -nargs=1 Template :call InsertTemplate(<f-args>)<cr>
+"--------------------------------------------------
+"
 
-"win-vind (https://pit-ray.github.io/win-vind/)
 command! GUINormal :AsyncRun win-vind -f change_to_normal
-
-function! Dos2Unix() abort
-    edit! ++ff=unix
-    execute "%s///ge"
-    execute "%s/\r//ge"
-endfunction
-
-command! Dos2Unix :call Dos2Unix()
