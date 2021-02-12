@@ -87,8 +87,10 @@ set number                          "show line number
 set showcmd                         "show inputting commands
 set list                            "show invisible char
 set listchars=tab:>-,trail:.        "tab - space .
-set lines=32                        "initial window height
-set columns=128                     "initial window width
+if has('gui_running')
+    set lines=32                        "initial window height
+    set columns=128                     "initial window width
+endif
 
 "indent
 filetype plugin indent on           "detect filetype
