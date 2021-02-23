@@ -62,6 +62,13 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 command! -range Eqga <line1>,<line2>EasyAlign<Space>-=
 
+"vim-easymotion
+nmap f <Plug>(easymotion-fl)
+nmap t <Plug>(easymotion-tl)
+nmap F <Plug>(easymotion-Fl)
+nmap T <Plug>(easymotion-Tl)
+nmap s <Plug>(easymotion-s2)
+
 " => Color Scheme --------------------------------------------------{{{1
 if empty(glob($VIMHOME . '/colors/hybrid.vim'))
     exe('term curl -fLo ' . $VIMHOME . '/colors/hybrid.vim --create-dirs https://raw.githubusercontent.com/w0ng/vim-hybrid/master/colors/hybrid.vim')
