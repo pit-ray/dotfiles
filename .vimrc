@@ -16,6 +16,11 @@ if empty(glob($VIMHOME . '/autoload/plug.vim'))
 endif
 
 call plug#begin($VIMHOME . '/plugged')
+" Try
+Plug 'vim-scripts/DoxygenToolkit.vim'
+
+" Stable
+Plug 'agatan/vim-sort-include'
 Plug 'cespare/vim-toml', {'for': 'toml'}
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
@@ -42,6 +47,9 @@ command! Update so<space>$MYVIMRC | PlugInstall
 command! So so<space>$MYVIMRC
 
 " => Plugin Options -------------------------------------------------{{{1
+" vim-sort-include
+au! BufWritePre *.{c,cpp,h,hpp,cc} SortInclude
+
 "vim-lsp
 let g:lsp_diagnostics_echo_cursor = 1
 
@@ -63,10 +71,12 @@ nmap ga <Plug>(EasyAlign)
 command! -range Eqga <line1>,<line2>EasyAlign<Space>-=
 
 "vim-easymotion
-nmap f <Plug>(easymotion-fl)
-nmap t <Plug>(easymotion-tl)
-nmap F <Plug>(easymotion-Fl)
-nmap T <Plug>(easymotion-Tl)
+nmap f <Plug>(easymotion-f)
+nmap F <Plug>(easymotion-overwin-f)
+
+nmap t <Plug>(easymotion-w)
+nmap T <Plug>(easymotion-b)
+
 nmap s <Plug>(easymotion-s2)
 
 " => Color Scheme --------------------------------------------------{{{1
@@ -94,7 +104,7 @@ set number                          "show line number
 set showcmd                         "show inputting commands
 set list                            "show invisible char
 set listchars=tab:>-,trail:.        "tab - space .
-if has('gui_running')
+if has('gui_running') && has('vim_starting')
     set lines=32                        "initial window height
     set columns=128                     "initial window width
 endif
