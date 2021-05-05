@@ -23,6 +23,8 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'agatan/vim-sort-include'
 Plug 'cespare/vim-toml', {'for': 'toml'}
 Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'cpiger/NeoDebug'
+Plug 'wordijp/NeoDebug'
 Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/vim-easy-align'
 Plug 'mattn/emmet-vim', {'for': 'html'}
@@ -78,6 +80,17 @@ nmap t <Plug>(easymotion-w)
 nmap T <Plug>(easymotion-b)
 
 nmap s <Plug>(easymotion-s2)
+
+"NeoDebug
+let g:neodbg_debugger              = 'gdb'
+let g:neodbg_gdb_path              = 'gdb'
+let g:neodbg_cmd_prefix            = 'GDB'
+let g:neodbg_console_height        = 5
+let g:neodbg_openbreaks_default    = 1
+let g:neodbg_openstacks_default    = 1
+let g:neodbg_openthreads_default   = 0
+let g:neodbg_openlocals_default    = 0
+let g:neodbg_openregisters_default = 0
 
 " => Color Scheme --------------------------------------------------{{{1
 if empty(glob($VIMHOME . '/colors/hybrid.vim'))
@@ -148,6 +161,9 @@ noremap <c-h> <c-w><c-h>
 noremap <c-j> <c-w><c-j>
 noremap <c-k> <c-w><c-k>
 noremap <c-l> <c-w><c-l>
+
+noremap <m-l> :cn<cr>
+noremap <m-h> :cp<cr>
 
 if has('terminal')
     tnoremap <c-h> <c-w><c-h>
