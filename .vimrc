@@ -84,7 +84,6 @@ nmap s <Plug>(easymotion-s2)
 "NeoDebug
 let g:neodbg_debugger              = 'gdb'
 let g:neodbg_gdb_path              = 'gdb'
-let g:neodbg_cmd_prefix            = 'GDB'
 let g:neodbg_console_height        = 5
 let g:neodbg_openbreaks_default    = 1
 let g:neodbg_openstacks_default    = 1
