@@ -24,6 +24,7 @@ Plug 'agatan/vim-sort-include'
 Plug 'cespare/vim-toml', {'for': 'toml'}
 Plug 'ctrlpvim/ctrlp.vim'
 " Plug 'cpiger/NeoDebug'
+Plug 'sainnhe/gruvbox-material'
 Plug 'wordijp/NeoDebug'
 Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/vim-easy-align'
@@ -47,6 +48,8 @@ packadd termdebug
 
 command! Update so<space>$MYVIMRC | PlugInstall
 command! So so<space>$MYVIMRC
+
+au! BufNewFile,BufRead *.vindrc set filetype=vim
 
 " => Plugin Options -------------------------------------------------{{{1
 " vim-sort-include
@@ -84,6 +87,7 @@ nmap s <Plug>(easymotion-s2)
 "NeoDebug
 let g:neodbg_debugger              = 'gdb'
 let g:neodbg_gdb_path              = 'gdb'
+let g:neodbg_cmd_prefix            = 'GDB'
 let g:neodbg_console_height        = 5
 let g:neodbg_openbreaks_default    = 1
 let g:neodbg_openstacks_default    = 1
@@ -92,21 +96,20 @@ let g:neodbg_openlocals_default    = 0
 let g:neodbg_openregisters_default = 0
 
 " => Color Scheme --------------------------------------------------{{{1
-if empty(glob($VIMHOME . '/colors/hybrid.vim'))
-    exe('term curl -fLo ' . $VIMHOME . '/colors/hybrid.vim --create-dirs https://raw.githubusercontent.com/w0ng/vim-hybrid/master/colors/hybrid.vim')
-endif
 syntax enable
 set background=dark
-if has('gui_running')
-    if has('syntax')
-        au! Colorscheme * highlight FullWidthSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-        au! VimEnter,WinEnter * match FullWidthSpace /　/
-    endif
-else
-    let g:hybrid_custom_term_colors = 1
-    let g:hybrid_reduced_contrast   = 1
+if has('termguicolors')
+    set termguicolors
 endif
-colorscheme hybrid
+
+let g:gruvbox_material_background = 'soft'
+let g:airline_theem = 'gruvbox_material'
+
+if has('syntax')
+    au! Colorscheme * highlight FullWidthSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+    au! VimEnter,WinEnter * match FullWidthSpace /　/
+endif
+colorscheme gruvbox-material
 
 " => Native Common Settings ----------------------------------------------{{{1
 set hlsearch                        "show highlight
