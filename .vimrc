@@ -57,10 +57,15 @@ au! BufWritePre *.{c,cpp,h,hpp,cc} SortInclude
 
 "vim-lsp
 let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_log_verbose=1
+let g:lsp_log_file = expand($VIMHOME . '/vim-lsp.log')
+
+let g:asyncomplete_log_file = expand($VIMHOME . '/asyncomplete.log')
 
 "vim-lsp-settings
 let g:lsp_settings_root_markers = ['.git']
 let g:lsp_settings_servers_dir  = $VIMHOME . '/vim-lsp-settings/servers'
+let g:lsp_settings_filetype_py = ['pyls-all']
 command! Def sp | LspDefinition
 command! Dec sp | LspDeclaration
 
