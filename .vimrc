@@ -68,6 +68,7 @@ let g:lsp_settings_servers_dir  = $VIMHOME . '/vim-lsp-settings/servers'
 let g:lsp_settings_filetype_py = ['pyls-all']
 command! Def sp | LspDefinition
 command! Dec sp | LspDeclaration
+noremap <leader>d :LspDefinition<cr>
 
 "vim-vinegar
 let g:NERDTreeHijackNetrw = 0
