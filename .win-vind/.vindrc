@@ -1,0 +1,21 @@
+set autofocus_textarea
+set shell = cmd
+set cmd_fontsize = 14
+set cmd_roughpos = LowerLeft
+set cmd_maxchar = 100
+
+rmap <capslock> <ctrl>
+
+inoremap <capslock> to_edi_normal
+
+imap <kana> <f13>
+inoremap <f13> to_instant_gui_normal
+
+imap <nocvt> <f14>
+inoremap <f14> easy_click_left
+
+imap <cvt> <f15>
+inoremap <f15> easy_click_right
+
+imap <app> <f16>
+inoremap <f16> window_resizer

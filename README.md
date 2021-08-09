@@ -1,4 +1,3 @@
-# myvim-min
-My Minimum Vim config
+# dotfiles
 
-You can use it by locating this .vimrc to user directory. This supports cross-platform.
+This supports cross-platform.
