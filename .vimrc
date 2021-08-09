@@ -11,8 +11,8 @@ let mapleader = "\<space>"
 " => Install plugins --------------------------------------------------{{{1
 let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
 if empty(glob($VIMHOME . '/autoload/plug.vim'))
-    exe('term curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
-    au! VimEnter * PlugInstall --sync | so $MYVIMRC
+  exe('term curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
+  au! VimEnter * PlugInstall --sync | so $MYVIMRC
 endif
 
 call plug#begin($VIMHOME . '/plugged')
@@ -24,6 +24,8 @@ Plug 'agatan/vim-sort-include'
 Plug 'cespare/vim-toml', {'for': 'toml'}
 Plug 'ctrlpvim/ctrlp.vim'
 " Plug 'cpiger/NeoDebug'
+Plug 'mattn/vim-gist'
+Plug 'mattn/webapi-vim'
 Plug 'sainnhe/gruvbox-material'
 Plug 'wordijp/NeoDebug'
 Plug 'easymotion/vim-easymotion'
@@ -41,10 +43,13 @@ Plug 'tpope/vim-vinegar'
 Plug 'vhdirk/vim-cmake', {'for': ['c', 'cpp']}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
+Plug 'pit-ray/vim-convcalc'
 call plug#end()
 
 "enable dgb debugger
 packadd termdebug
+
+set pythonthreedll="C:\Program Files\Python36\python36.dll"
 
 command! Update so<space>$MYVIMRC | PlugInstall
 command! So so<space>$MYVIMRC
@@ -57,18 +62,12 @@ au! BufWritePre *.{c,cpp,h,hpp,cc} SortInclude
 
 "vim-lsp
 let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_log_verbose=1
-let g:lsp_log_file = expand($VIMHOME . '/vim-lsp.log')
-
-let g:asyncomplete_log_file = expand($VIMHOME . '/asyncomplete.log')
 
 "vim-lsp-settings
 let g:lsp_settings_root_markers = ['.git']
 let g:lsp_settings_servers_dir  = $VIMHOME . '/vim-lsp-settings/servers'
-let g:lsp_settings_filetype_py = ['pyls-all']
 command! Def sp | LspDefinition
 command! Dec sp | LspDeclaration
-noremap <leader>d :LspDefinition<cr>
 
 "vim-vinegar
 let g:NERDTreeHijackNetrw = 0
@@ -105,15 +104,15 @@ let g:neodbg_openregisters_default = 0
 syntax enable
 set background=dark
 if has('termguicolors')
-    set termguicolors
+  set termguicolors
 endif
 
 let g:gruvbox_material_background = 'soft'
 let g:airline_theem = 'gruvbox_material'
 
 if has('syntax')
-    au! Colorscheme * highlight FullWidthSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-    au! VimEnter,WinEnter * match FullWidthSpace /　/
+  au! Colorscheme * highlight FullWidthSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+  au! VimEnter,WinEnter * match FullWidthSpace /　/
 endif
 colorscheme gruvbox-material
 
@@ -126,16 +125,17 @@ set showcmd                         "show inputting commands
 set list                            "show invisible char
 set listchars=tab:>-,trail:.        "tab - space .
 if has('gui_running') && has('vim_starting')
-    set lines=32                        "initial window height
-    set columns=128                     "initial window width
+  set lines=32                        "initial window height
+  set columns=128                     "initial window width
 endif
 
 "indent
 filetype plugin indent on           "detect filetype
 set autoindent                      "automatic indent
 set expandtab                       "convert tab to space
-set tabstop=4                       "tab = 4 spaces
-set shiftwidth=4                    "the number of space in auto indent
+
+au FileType *.{c,h,cpp,hpp,cxx,cc} setlocal ts=4 sts=4 sw=4
+au FileType *.{vim,vimrc} setlocal ts=2 sts=2 sw=2
 set foldmethod=marker               "fold with maker (e.g. {{{1)
 set foldlevel=100                   "initial fold mode
 
@@ -154,7 +154,7 @@ set novb t_vb=                      "disable all beep
 set noerrorbells                    "disable error beep
 
 if has('win32')
-    set shell=powershell
+  set shell=powershell
 endif
 
 set undodir=$VIMHOME                "infinity undo
@@ -174,10 +174,10 @@ noremap <m-l> :cn<cr>
 noremap <m-h> :cp<cr>
 
 if has('terminal')
-    tnoremap <c-h> <c-w><c-h>
-    tnoremap <c-j> <c-w><c-j>
-    tnoremap <c-k> <c-w><c-k>
-    tnoremap <c-l> <c-w><c-l>
+  tnoremap <c-h> <c-w><c-h>
+  tnoremap <c-j> <c-w><c-j>
+  tnoremap <c-k> <c-w><c-k>
+  tnoremap <c-l> <c-w><c-l>
 endif
 
 let g:termdebug_use_prompt = 0
@@ -193,15 +193,15 @@ noremap <leader>r :Run<cr><esc>:Source<cr>
 " => My functions  ---------------------------------------------------------{{{1
 let g:previous_word_under_cursor = ''
 function! EvaluateUnderCursor() abort
-    if exists(':Evaluate')
-        let l:word = expand('<cword>')
-        if !empty(l:word) && l:word != ' '
-            if g:previous_word_under_cursor != l:word
-                Evaluate
-                let g:previous_word_under_cursor = l:word
-            endif
-        endif
+  if exists(':Evaluate')
+    let l:word = expand('<cword>')
+    if !empty(l:word) && l:word != ' '
+      if g:previous_word_under_cursor != l:word
+        Evaluate
+        let g:previous_word_under_cursor = l:word
+      endif
     endif
+  endif
 endfunction
 
 set updatetime=700
@@ -214,9 +214,9 @@ function! StartNewLineWithRemoveSP() abort
     normal w
     let l:spnum = col('.') - l:startcol - 1
     if l:spnum > 0
-        for a in range(l:spnum)
-            normal X
-        endfor
+      for a in range(l:spnum)
+        normal X
+      endfor
     endif
     execute "normal i\<cr>\<esc>"
 endfunction
@@ -227,26 +227,26 @@ endfunction
 "           int a,
 "           int b) ;
 function! AlignArgs() abort
-    let l:startq = '('
-    let l:endq   = ')'
-    let l:delim  = ','
+  let l:startq = '('
+  let l:endq   = ')'
+  let l:delim  = ','
 
-    call cursor(0, 1)
-    call search(l:startq)
-    if searchpair(l:startq, '', l:endq, 'n') < 1
-        echo "not found pair"
+  call cursor(0, 1)
+  call search(l:startq)
+  if searchpair(l:startq, '', l:endq, 'n') < 1
+    echo "not found pair"
+  endif
+  call StartNewLineWithRemoveSP()
+
+  while 1
+    let [l:plnum, l:pcol] = searchpairpos(l:startq, '', l:endq, 'n')
+    let [l:dlnum, l:dcol] = searchpos(l:delim, 'n')
+    if l:dlnum == 0 || l:dcol == 0 || l:dlnum > l:plnum || l:dcol > l:pcol
+      break
     endif
+    call cursor(l:dlnum, l:dcol)
     call StartNewLineWithRemoveSP()
-
-    while 1
-        let [l:plnum, l:pcol] = searchpairpos(l:startq, '', l:endq, 'n')
-        let [l:dlnum, l:dcol] = searchpos(l:delim, 'n')
-        if l:dlnum == 0 || l:dcol == 0 || l:dlnum > l:plnum || l:dcol > l:pcol
-            break
-        endif
-        call cursor(l:dlnum, l:dcol)
-        call StartNewLineWithRemoveSP()
-    endwhile
+  endwhile
 endfunction
 noremap <leader>a :call AlignArgs()<cr>
 
@@ -257,33 +257,70 @@ noremap <leader>a :call AlignArgs()<cr>
 ":Template C
 ":Template H
 function! InsertText(insert_text) abort
-    execute ":normal i" . a:insert_text
+  execute ":normal i" . a:insert_text
 endfunction
 
 function! InsertTemplate(type) abort
-    let l:lower_type = tolower(a:type)
+  let l:lower_type = tolower(a:type)
 
-    if l:lower_type == "cpp"
-        call InsertText("#include <iostream>\n\nint main()\n{\n\n}")
-    elseif l:lower_type == "c"
-        call InsertText("#include <stdio.h>\n\nint main()\n{\n\n}")
-    elseif l:lower_type == "h" || l:lower_type == "hpp"
-        let l:filename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
-        call InsertText("#ifndef _" . l:filename . "\n#define _" . l:filename . "\n\n#endif")
-    else
-        echo "not supported"
-    endif
+  if l:lower_type == "cpp"
+    call InsertText("#include <iostream>\n\nint main()\n{\n\n}")
+  elseif l:lower_type == "c"
+    call InsertText("#include <stdio.h>\n\nint main()\n{\n\n}")
+  elseif l:lower_type == "h" || l:lower_type == "hpp"
+    let l:filename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
+    call InsertText("#ifndef _" . l:filename . "\n#define _" . l:filename . "\n\n#endif")
+  else
+    echo "not supported"
+  endif
 endfunction
 
 command! -nargs=1 Template :call InsertTemplate(<f-args>)<cr>
+
+
+" Quick Project Creater
+function! CreateFile(name) abort
+  let l:path = expand("%:p:h") . "/" . a:name
+  silent execute "e " . l:path
+  silent execute("write")
+  return l:path
+endfunction
+
+function! CreateCmakeProject(...) abort
+  split
+
+  let l:flags_path = CreateFile("compile_flags.txt")
+  if getfsize(l:flags_path) == 0
+    call InsertText("-I.")
+    silent execute("write")
+  endif
+
+  let l:name = "a"
+  if a:0 > 0
+    let l:name = a:1
+  endif
+
+  let l:cmake_lists_path = CreateFile("CMakeLists.txt")
+  echo l:cmake_lists_path
+  if getfsize(l:cmake_lists_path) == 0
+    call InsertText("cmake_minimum_required(VERSION 3.0.0)\n")
+    call InsertText("project(" . l:name . " VERSION 1.0.0)\n")
+    call InsertText("include_directories(${PROJECT_SOURCE_DIR})\n")
+    call InsertText("add_executable(${PROJECT_NAME})")
+    silent execute("write")
+  endif
+endfunction
+
+command! -nargs=* QuickCmake :call CreateCmakeProject(<f-args>)
 
 "win-vind (https://pit-ray.github.io/win-vind/)
 command! GUINormal :AsyncRun win-vind -f change_to_normal
 
 function! Dos2Unix() abort
-    edit! ++ff=unix
-    execute "%s///ge"
-    execute "%s/\r//ge"
+  edit! ++ff=unix
+  execute "%s///ge"
+  execute "%s/\r//ge"
 endfunction
+au! BufWritePre,FileType *.{vim,vimc} call Dos2Unix
 
 command! Dos2Unix :call Dos2Unix()
