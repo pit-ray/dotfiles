@@ -301,7 +301,6 @@ function! CreateCmakeProject(...) abort
   endif
 
   let l:cmake_lists_path = CreateFile("CMakeLists.txt")
-  echo l:cmake_lists_path
   if getfsize(l:cmake_lists_path) == 0
     call InsertText("cmake_minimum_required(VERSION 3.0.0)\n")
     call InsertText("project(" . l:name . " VERSION 1.0.0)\n")
