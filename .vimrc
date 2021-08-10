@@ -43,7 +43,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'vhdirk/vim-cmake', {'for': ['c', 'cpp']}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
-Plug 'pit-ray/vim-convcalc'
+" Plug 'pit-ray/vim-convcalc'
 call plug#end()
 
 "enable dgb debugger
