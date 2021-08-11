@@ -6,7 +6,8 @@ set cmd_maxchar = 100
 
 rmap <capslock> <ctrl>
 
-inoremap <capslock> to_edi_normal
+imap <capslock> <f20>
+inoremap <f20> to_edi_normal
 
 imap <kana> <f13>
 inoremap <f13> to_instant_gui_normal
