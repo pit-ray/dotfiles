@@ -16,18 +16,15 @@ if empty(glob($VIMHOME . '/autoload/plug.vim'))
 endif
 
 call plug#begin($VIMHOME . '/plugged')
-" Try
-Plug 'vim-scripts/DoxygenToolkit.vim'
 
 " Stable
 Plug 'agatan/vim-sort-include'
 Plug 'cespare/vim-toml', {'for': 'toml'}
 Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'cpiger/NeoDebug'
+Plug 'puremourning/vimspector'
 Plug 'mattn/vim-gist'
 Plug 'mattn/webapi-vim'
 Plug 'sainnhe/gruvbox-material'
-Plug 'wordijp/NeoDebug'
 Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/vim-easy-align'
 Plug 'mattn/emmet-vim', {'for': 'html'}
@@ -46,13 +43,10 @@ Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
 " Plug 'pit-ray/vim-convcalc'
 call plug#end()
 
-"enable dgb debugger
-packadd termdebug
+" set pythonthreedll="C:\Program Files\Python36\python36.dll"
 
-set pythonthreedll="C:\Program Files\Python36\python36.dll"
-
-command! Update so<space>$MYVIMRC | PlugInstall
 command! So so<space>$MYVIMRC
+command! Update So | PlugInstall | VimspectorInstall
 
 au! BufNewFile,BufRead *.vindrc set filetype=vim
 
@@ -83,22 +77,13 @@ command! -range Eqga <line1>,<line2>EasyAlign<Space>-=
 "vim-easymotion
 nmap f <Plug>(easymotion-f)
 nmap F <Plug>(easymotion-overwin-f)
-
 nmap t <Plug>(easymotion-w)
 nmap T <Plug>(easymotion-b)
-
 nmap s <Plug>(easymotion-s2)
 
-"NeoDebug
-let g:neodbg_debugger              = 'gdb'
-let g:neodbg_gdb_path              = 'gdb'
-let g:neodbg_cmd_prefix            = 'GDB'
-let g:neodbg_console_height        = 5
-let g:neodbg_openbreaks_default    = 1
-let g:neodbg_openstacks_default    = 1
-let g:neodbg_openthreads_default   = 0
-let g:neodbg_openlocals_default    = 0
-let g:neodbg_openregisters_default = 0
+" vimspector
+let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+let g:vimspector_install_gadgets = ['debugpy', 'vscode-cpptools', 'CodeLLDB']
 
 " => Color Scheme --------------------------------------------------{{{1
 syntax enable
@@ -120,8 +105,7 @@ colorscheme gruvbox-material
 set hlsearch                        "show highlight
 set showmatch                       "show matched brackets
 set ruler                           "show cursor position
-set number                          "show line number
-set showcmd                         "show inputting commands
+set number                          "show line number set showcmd                         "show inputting commands
 set list                            "show invisible char
 set listchars=tab:>-,trail:.        "tab - space .
 if has('gui_running') && has('vim_starting')
@@ -134,8 +118,8 @@ filetype plugin indent on           "detect filetype
 set autoindent                      "automatic indent
 set expandtab                       "convert tab to space
 
-au FileType *.{c,h,cpp,hpp,cxx,cc} setlocal ts=4 sts=4 sw=4
-au FileType *.{vim,vimrc} setlocal ts=2 sts=2 sw=2
+au! FileType c,cpp setlocal ts=4 sts=4 sw=4
+au! FileType json,vim setlocal ts=2 sts=2 sw=2
 set foldmethod=marker               "fold with maker (e.g. {{{1)
 set foldlevel=100                   "initial fold mode
 
@@ -180,15 +164,15 @@ if has('terminal')
   tnoremap <c-l> <c-w><c-l>
 endif
 
-let g:termdebug_use_prompt = 0
-noremap <leader>b :Break<cr>
-noremap <f5> :Continue<cr>
-noremap <leader>e :Evaluate<cr>
-noremap <leader>g :Gdb<cr>
-noremap <leader>s :Step<cr>
-noremap <leader>o :Over<cr>
-noremap <leader>q :Gdb<cr><esc>iquit<cr>
-noremap <leader>r :Run<cr><esc>:Source<cr>
+"let g:termdebug_use_prompt = 0
+" noremap <leader>b :Break<cr>
+" noremap <f5> :Continue<cr>
+" noremap <leader>e :Evaluate<cr>
+" noremap <leader>g :Gdb<cr>
+" noremap <leader>s :Step<cr>
+" noremap <leader>o :Over<cr>
+" noremap <leader>q :Gdb<cr><esc>iquit<cr>
+" noremap <leader>r :Run<cr><esc>:Source<cr>
 
 " => My functions  ---------------------------------------------------------{{{1
 let g:previous_word_under_cursor = ''
