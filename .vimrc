@@ -164,16 +164,6 @@ if has('terminal')
   tnoremap <c-l> <c-w><c-l>
 endif
 
-"let g:termdebug_use_prompt = 0
-" noremap <leader>b :Break<cr>
-" noremap <f5> :Continue<cr>
-" noremap <leader>e :Evaluate<cr>
-" noremap <leader>g :Gdb<cr>
-" noremap <leader>s :Step<cr>
-" noremap <leader>o :Over<cr>
-" noremap <leader>q :Gdb<cr><esc>iquit<cr>
-" noremap <leader>r :Run<cr><esc>:Source<cr>
-
 " => My functions  ---------------------------------------------------------{{{1
 let g:previous_word_under_cursor = ''
 function! EvaluateUnderCursor() abort
