@@ -46,7 +46,7 @@ call plug#end()
 " set pythonthreedll="C:\Program Files\Python36\python36.dll"
 
 command! So so<space>$MYVIMRC
-command! Update So | PlugInstall | VimspectorInstall
+command! Update PlugInstall | VimspectorInstall
 
 au! BufNewFile,BufRead *.vindrc set filetype=vim
 
