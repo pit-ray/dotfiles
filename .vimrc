@@ -46,7 +46,7 @@ call plug#end()
 " set pythonthreedll="C:\Program Files\Python36\python36.dll"
 
 command! So so<space>$MYVIMRC
-command! Update So | PlugInstall | VimspectorInstall
+command! Update PlugInstall | VimspectorInstall
 
 au! BufNewFile,BufRead *.vindrc set filetype=vim
 
@@ -164,6 +164,16 @@ if has('terminal')
   tnoremap <c-l> <c-w><c-l>
 endif
 
+"let g:termdebug_use_prompt = 0
+" noremap <leader>b :Break<cr>
+" noremap <f5> :Continue<cr>
+" noremap <leader>e :Evaluate<cr>
+" noremap <leader>g :Gdb<cr>
+" noremap <leader>s :Step<cr>
+" noremap <leader>o :Over<cr>
+" noremap <leader>q :Gdb<cr><esc>iquit<cr>
+" noremap <leader>r :Run<cr><esc>:Source<cr>
+
 " => My functions  ---------------------------------------------------------{{{1
 let g:previous_word_under_cursor = ''
 function! EvaluateUnderCursor() abort
@@ -234,22 +244,27 @@ function! InsertText(insert_text) abort
   execute ":normal i" . a:insert_text
 endfunction
 
-function! InsertTemplate(type) abort
-  let l:lower_type = tolower(a:type)
+function! InsertTemplate() abort
+  let l:t = tolower(expand("%:e"))
 
-  if l:lower_type == "cpp"
+  if l:t == "cpp" || l:t == "cxx" || l:t == "cc"
     call InsertText("#include <iostream>\n\nint main()\n{\n\n}")
-  elseif l:lower_type == "c"
+  elseif l:t == "c"
     call InsertText("#include <stdio.h>\n\nint main()\n{\n\n}")
-  elseif l:lower_type == "h" || l:lower_type == "hpp"
+  elseif l:t == "h" || l:t == "hpp"
     let l:filename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
     call InsertText("#ifndef _" . l:filename . "\n#define _" . l:filename . "\n\n#endif")
+  elseif l:t == "py"
+    call InsertText("# coding: utf-8\n")
+    call InsertText("\n")
+    call InsertText("if __name__ == '__main__':\n")
+    call InsertText("    print()\n")
   else
     echo "not supported"
   endif
 endfunction
 
-command! -nargs=1 Template :call InsertTemplate(<f-args>)<cr>
+command! Template :call InsertTemplate()
 
 
 " Quick Project Creater
