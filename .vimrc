@@ -24,7 +24,6 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'puremourning/vimspector'
 Plug 'mattn/vim-gist'
 Plug 'mattn/webapi-vim'
-Plug 'sainnhe/gruvbox-material'
 Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/vim-easy-align'
 Plug 'mattn/emmet-vim', {'for': 'html'}
@@ -41,6 +40,13 @@ Plug 'vhdirk/vim-cmake', {'for': ['c', 'cpp']}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
 " Plug 'pit-ray/vim-convcalc'
+
+" Colorschemes
+Plug 'sainnhe/gruvbox-material'
+Plug 'ghifarit53/tokyonight-vim'
+Plug 'junegunn/seoul256.vim'
+Plug 'sonph/onehalf', {'rtp': 'vim'}
+Plug 'arcticicestudio/nord-vim'
 call plug#end()
 
 " set pythonthreedll="C:\Program Files\Python36\python36.dll"
@@ -92,14 +98,38 @@ if has('termguicolors')
   set termguicolors
 endif
 
+" ==> Each settings
 let g:gruvbox_material_background = 'soft'
 let g:airline_theem = 'gruvbox_material'
+
+let g:tokyonight_style = 'storm'
 
 if has('syntax')
   au! Colorscheme * highlight FullWidthSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
   au! VimEnter,WinEnter * match FullWidthSpace /　/
 endif
-colorscheme gruvbox-material
+
+" Switch colorscheme
+let g:colorschemes = [
+  \ 'gruvbox-material',
+  \ 'tokyonight',
+  \ 'seoul256',
+  \ 'onehalfdark',
+  \ 'nord']
+let g:seed = srand()
+
+function! SelectRandomCSIndex() abort
+  return rand(g:seed) % len(g:colorschemes)
+endfunction
+
+function! SwitchCSRandom() abort
+  let l:ranidx = SelectRandomCSIndex()
+  silent execute('colorscheme ' . g:colorschemes[l:ranidx])
+endfunction
+
+command! Randomcs :call SwitchCSRandom()
+
+call SwitchCSRandom()
 
 " => Native Common Settings ----------------------------------------------{{{1
 set hlsearch                        "show highlight
