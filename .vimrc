@@ -148,8 +148,8 @@ filetype plugin indent on           "detect filetype
 set autoindent                      "automatic indent
 set expandtab                       "convert tab to space
 
-au! FileType c,cpp setlocal ts=4 sts=4 sw=4
-au! FileType json,vim setlocal ts=2 sts=2 sw=2
+au! FileType txt,c,cpp setlocal ts=4 sts=4 sw=4
+au! FileType json,vim,yml setlocal ts=2 sts=2 sw=2
 set foldmethod=marker               "fold with maker (e.g. {{{1)
 set foldlevel=100                   "initial fold mode
 
