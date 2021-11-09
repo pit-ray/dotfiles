@@ -110,12 +110,13 @@ if has('syntax')
 endif
 
 " Switch colorscheme
-let g:colorschemes = ["nord"]
-"  \ 'gruvbox-material',
-"  \ 'tokyonight',
-"  \ 'seoul256',
-"  \ 'onehalfdark',
-"  \ 'nord']
+let g:colorschemes = [
+  "\ 'gruvbox-material',
+  "\ 'tokyonight',
+  "\ 'seoul256',
+  "\ 'onehalfdark',
+  \ 'nord'
+  \ ]
 let g:seed = srand()
 
 function! SelectRandomCSIndex() abort
@@ -184,6 +185,11 @@ noremap <c-j> <c-w><c-j>
 noremap <c-k> <c-w><c-k>
 noremap <c-l> <c-w><c-l>
 
+noremap <c-left> <c-w><c-h>
+noremap <c-down> <c-w><c-j>
+noremap <c-up> <c-w><c-k>
+noremap <c-right> <c-w><c-l>
+
 noremap <m-l> :cn<cr>
 noremap <m-h> :cp<cr>
 
@@ -192,6 +198,13 @@ if has('terminal')
   tnoremap <c-j> <c-w><c-j>
   tnoremap <c-k> <c-w><c-k>
   tnoremap <c-l> <c-w><c-l>
+
+  tnoremap <c-left> <c-w><c-h>
+  tnoremap <c-down> <c-w><c-j>
+  tnoremap <c-up> <c-w><c-k>
+  tnoremap <c-right> <c-w><c-l>
+
+  tnoremap <c-i> <c-w><s-n>
 endif
 
 "let g:termdebug_use_prompt = 0
