@@ -110,12 +110,12 @@ if has('syntax')
 endif
 
 " Switch colorscheme
-let g:colorschemes = [
-  \ 'gruvbox-material',
-  \ 'tokyonight',
-  \ 'seoul256',
-  \ 'onehalfdark',
-  \ 'nord']
+let g:colorschemes = ["nord"]
+"  \ 'gruvbox-material',
+"  \ 'tokyonight',
+"  \ 'seoul256',
+"  \ 'onehalfdark',
+"  \ 'nord']
 let g:seed = srand()
 
 function! SelectRandomCSIndex() abort
@@ -148,7 +148,7 @@ filetype plugin indent on           "detect filetype
 set autoindent                      "automatic indent
 set expandtab                       "convert tab to space
 
-au! FileType txt,c,cpp setlocal ts=4 sts=4 sw=4
+au! FileType txt,c,cpp,scss,css,html,md setlocal ts=4 sts=4 sw=4
 au! FileType json,vim,yml setlocal ts=2 sts=2 sw=2
 set foldmethod=marker               "fold with maker (e.g. {{{1)
 set foldlevel=100                   "initial fold mode
@@ -335,10 +335,49 @@ command! -nargs=* QuickCmake :call CreateCmakeProject(<f-args>)
 command! GUINormal :AsyncRun win-vind -f change_to_normal
 
 function! Dos2Unix() abort
+  write
   edit! ++ff=unix
   execute "%s///ge"
   execute "%s/\r//ge"
 endfunction
-au! BufWritePre,FileType *.{vim,vimc} call Dos2Unix
+au! BufWritePre,FileType *.{vim,vimc} call Dos2Unix()
 
 command! Dos2Unix :call Dos2Unix()
+
+
+" .vimspector.json
+function! CreateVimSpectorConfig(type) abort
+  let l:cmake_lists_path = CreateFile(".vimspector.json")
+  if getfsize(l:cmake_lists_path) != 0
+    return
+  endif
+
+  let l:lower_type = tolower(a:type)
+
+  if l:lower_type == "c"
+    call InsertText("{\n")
+    call InsertText("  \"configurations\": {\n")
+    call InsertText("    \"cpp\": {\n")
+    call InsertText("      \"adapter\": \"vscode-cpptools\",\n")
+    call InsertText("      \"configuration\": {\n")
+    call InsertText("        \"type\": \"cppdbg\",\n")
+    call InsertText("        \"request\": \"launch\",\n")
+    call InsertText("        \"program\": \"${workspaceRoot}/a.exe\",\n")
+    call InsertText("        \"args\": [],\n")
+    call InsertText("        \"cwd\": \"${workspaceRoot}\",\n")
+    call InsertText("        \"environment\": [],\n")
+    call InsertText("        \"externalConsole\": false,\n")
+    call InsertText("        \"stopAtEntry\": true,\n")
+    call InsertText("        \"MIMode\": \"gdb\",\n")
+    call InsertText("        \"logging\": {\n")
+    call InsertText("          \"engineLogging\": false\n")
+    call InsertText("        }\n")
+    call InsertText("      }\n")
+    call InsertText("    }\n")
+    call InsertText("  }\n")
+    call InsertText("}")
+  endif
+  silent execute("write")
+endfunction
+
+command! -nargs=1 VimspectorCreate :call CreateVimSpectorConfig(<f-args>)
