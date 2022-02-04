@@ -5,6 +5,8 @@ set nocompatible
 set fileencodings=utf-8,cp932,euc-jp,iso-20220-jp,default,latin
 scriptencoding
 
+set pythonthreedll=C:/Python37/python37.dll
+
 " => Common bindings --------------------------------------------------{{{1
 let mapleader = "\<space>"
 
@@ -62,6 +64,7 @@ au! BufWritePre *.{c,cpp,h,hpp,cc} SortInclude
 
 "vim-lsp
 let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_log_verbose = 0
 
 "vim-lsp-settings
 let g:lsp_settings_root_markers = ['.git']
@@ -150,7 +153,7 @@ set autoindent                      "automatic indent
 set expandtab                       "convert tab to space
 
 au! FileType txt,c,cpp,scss,css,html,md setlocal ts=4 sts=4 sw=4
-au! FileType json,vim,yml setlocal ts=2 sts=2 sw=2
+au! FileType json,vim,yml,tex setlocal ts=2 sts=2 sw=2
 set foldmethod=marker               "fold with maker (e.g. {{{1)
 set foldlevel=100                   "initial fold mode
 
@@ -353,7 +356,7 @@ function! Dos2Unix() abort
   execute "%s///ge"
   execute "%s/\r//ge"
 endfunction
-au! BufWritePre,FileType *.{vim,vimc} call Dos2Unix()
+"au! BufWritePre,FileType *.{vim,vimc} call Dos2Unix()
 
 command! Dos2Unix :call Dos2Unix()
 
