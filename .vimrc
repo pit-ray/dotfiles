@@ -165,6 +165,12 @@ set nobackup                        "not make backup files
 set noswapfile                      "not make swap files
 set backspace=indent,eol,start      "behavior of back space
 set clipboard=unnamed,autoselect    "copy to OS's clipboard
+if executable('clip.exe')
+  augroup Yank
+    au!
+    autocmd TextYankPost * :call system('clip.exe', @")
+  augroup END
+endif
 set wildmenu                        "more informational completion
 set wildmode=list:longest,full      "wildmenu's behavior
 
