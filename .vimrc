@@ -23,7 +23,6 @@ call plug#begin($VIMHOME . '/plugged')
 Plug 'agatan/vim-sort-include'
 Plug 'cespare/vim-toml', {'for': 'toml'}
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'puremourning/vimspector'
 Plug 'mattn/vim-gist'
 Plug 'mattn/webapi-vim'
 Plug 'easymotion/vim-easymotion'
@@ -41,7 +40,6 @@ Plug 'tpope/vim-vinegar'
 Plug 'vhdirk/vim-cmake', {'for': ['c', 'cpp']}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
-" Plug 'pit-ray/vim-convcalc'
 
 " Colorschemes
 Plug 'sainnhe/gruvbox-material'
@@ -90,9 +88,16 @@ nmap t <Plug>(easymotion-w)
 nmap T <Plug>(easymotion-b)
 nmap s <Plug>(easymotion-s2)
 
-" vimspector
-let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
-let g:vimspector_install_gadgets = ['debugpy', 'vscode-cpptools', 'CodeLLDB']
+function! EnableVimspector() abort
+  PlugInstall 'puremourning/vimspector'
+
+  " vimspector
+  let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+  let g:vimspector_install_gadgets = ['debugpy', 'vscode-cpptools', 'CodeLLDB']
+endfunction
+
+command! CppDebug :call EnableVimspector()
+
 
 " => Color Scheme --------------------------------------------------{{{1
 syntax enable
@@ -165,12 +170,6 @@ set nobackup                        "not make backup files
 set noswapfile                      "not make swap files
 set backspace=indent,eol,start      "behavior of back space
 set clipboard=unnamed,autoselect    "copy to OS's clipboard
-if executable('clip.exe')
-  augroup Yank
-    au!
-    autocmd TextYankPost * :call system('clip.exe', @")
-  augroup END
-endif
 set wildmenu                        "more informational completion
 set wildmode=list:longest,full      "wildmenu's behavior
 
