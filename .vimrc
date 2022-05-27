@@ -41,6 +41,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'vhdirk/vim-cmake', {'for': ['c', 'cpp']}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
+Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'pit-ray/vim-convcalc'
 
 " Colorschemes
@@ -57,6 +58,8 @@ command! So so<space>$MYVIMRC
 command! Update PlugInstall | VimspectorInstall
 
 au! BufNewFile,BufRead *.vindrc set filetype=vim
+
+IndentGuidesEnable
 
 " => Plugin Options -------------------------------------------------{{{1
 " vim-sort-include
