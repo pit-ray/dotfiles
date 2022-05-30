@@ -58,7 +58,7 @@ command! Update PlugInstall | VimspectorInstall
 
 au! BufNewFile,BufRead *.vindrc set filetype=vim
 
-IndentGuidesEnable
+au! BufNewFile,BufRead *.py IndentGuidesEnable
 
 " => Plugin Options -------------------------------------------------{{{1
 " vim-sort-include
@@ -92,15 +92,13 @@ nmap t <Plug>(easymotion-w)
 nmap T <Plug>(easymotion-b)
 nmap s <Plug>(easymotion-s2)
 
-function! EnableVimspector() abort
+if has('python')
   PlugInstall 'puremourning/vimspector'
 
   " vimspector
   let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
   let g:vimspector_install_gadgets = ['debugpy', 'vscode-cpptools', 'CodeLLDB']
-endfunction
-
-command! CppDebug :call EnableVimspector()
+endif
 
 
 " => Color Scheme --------------------------------------------------{{{1
