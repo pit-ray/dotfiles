@@ -18,7 +18,7 @@ if ($^O eq 'linux') {
     $pdf_previewer = 'open %S';
 } else {
     $dvi_previewer = 'start %S';
-    $pdf_previewer = 'sumatrapdf -reuse_instance %S';
+    $pdf_previewer = 'start %S';
 }
 
 $clean_ext = '%R.synctex.gz';
