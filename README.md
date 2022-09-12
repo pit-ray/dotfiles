@@ -2,7 +2,8 @@
 
 ## Setup Vim
 The .vimrc supports cross-platform. Furthermore, it does not need to require preparation to construct .vim/vimfiles. All process is done automatically by .vimrc.
-```
+
+```sh
 cp dotfiles/.vimrc ~
 ```
 
