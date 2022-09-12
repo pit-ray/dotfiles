@@ -17,6 +17,10 @@ if empty(glob($VIMHOME . '/autoload/plug.vim'))
   au! VimEnter * PlugInstall --sync | so $MYVIMRC
 endif
 
+if !exists('plug#begin')
+  quitall
+endif
+
 call plug#begin($VIMHOME . '/plugged')
 
 " Stable
@@ -55,6 +59,11 @@ call plug#end()
 
 command! So so<space>$MYVIMRC
 command! Update PlugInstall | VimspectorInstall
+
+function! InitVim() abort
+  PlugInstall
+  quitall!
+endfunction
 
 au! BufNewFile,BufRead *.vindrc set filetype=vim
 

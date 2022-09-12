@@ -19,5 +19,6 @@ docker run \
   -v /mnt/d/out:/root/work/outputs \
   -v $current_dir:/root/work \
   -w /root/work \
+  --shm-size=12g \
   $image_name \
   bash
