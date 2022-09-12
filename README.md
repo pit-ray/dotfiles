@@ -7,7 +7,7 @@ The .vimrc supports cross-platform. Furthermore, it does not need to require pre
 cp dotfiles/.vimrc ~
 ```
 
-## Setup the environment for LateX on Windows.
+## Setup the environment for LaTeX on Windows.
 
 1. Install chocolatey.
 ```sh
