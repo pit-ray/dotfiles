@@ -22,14 +22,11 @@ WORKDIR vim
 RUN git checkout v9.0.0445
 RUN ./configure --with-features=huge --enable-fail-if-missing --enable-python3interp
 RUN make -j4 ; make install
-
-WORKDIR /root
+WORKDIR /
 
 # Setup .vimrc for Vim
-RUN git clone https://github.com/pit-ray/dotfiles.git
-RUN cp dotfiles/.vimrc $HOME/.vimrc
-RUN vim -c "quitall!"
-RUN vim -c "call InitVim()"
+COPY .vimrc /root/.vimrc
+RUN vim -c "qa!"
 
 RUN pip3 install pip --upgrade
 RUN pip3 install \

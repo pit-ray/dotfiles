@@ -6,23 +6,21 @@ set fileencodings=utf-8,cp932,euc-jp,iso-20220-jp,default,latin
 scriptencoding
 
 set pythonthreedll=C:/Python37/python37.dll
+" set pythonthreedll="C:\Program Files\Python36\python36.dll"
 
 " => Common bindings --------------------------------------------------{{{1
 let mapleader = "\<space>"
 
 " => Install plugins --------------------------------------------------{{{1
 let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
-if empty(glob($VIMHOME . '/autoload/plug.vim'))
-  exe('term curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
-  au! VimEnter * PlugInstall --sync | so $MYVIMRC
+let s:initial_startup = empty(glob($VIMHOME . '/autoload/plug.vim'))
+if s:initial_startup
+  call system('curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
+  exe('so ' . $VIMHOME . '/autoload/plug.vim')
 endif
-
-if !exists('plug#begin')
-  quitall
-endif
+au! VimEnter * PlugInstall --sync | so $MYVIMRC
 
 call plug#begin($VIMHOME . '/plugged')
-
 " Stable
 Plug 'agatan/vim-sort-include'
 Plug 'cespare/vim-toml', {'for': 'toml'}
@@ -55,18 +53,11 @@ Plug 'sonph/onehalf', {'rtp': 'vim'}
 Plug 'arcticicestudio/nord-vim'
 call plug#end()
 
-" set pythonthreedll="C:\Program Files\Python36\python36.dll"
-
-command! So so<space>$MYVIMRC
-command! Update PlugInstall | VimspectorInstall
-
-function! InitVim() abort
+if s:initial_startup
   PlugInstall
-  quitall!
-endfunction
+endif
 
 au! BufNewFile,BufRead *.vindrc set filetype=vim
-
 au! BufNewFile,BufRead *.py IndentGuidesEnable
 
 " => Plugin Options -------------------------------------------------{{{1
@@ -128,28 +119,7 @@ if has('syntax')
   au! VimEnter,WinEnter * match FullWidthSpace /　/
 endif
 
-" Switch colorscheme
-let g:colorschemes = [
-  "\ 'gruvbox-material',
-  "\ 'tokyonight',
-  "\ 'seoul256',
-  "\ 'onehalfdark',
-  \ 'nord'
-  \ ]
-let g:seed = srand()
-
-function! SelectRandomCSIndex() abort
-  return rand(g:seed) % len(g:colorschemes)
-endfunction
-
-function! SwitchCSRandom() abort
-  let l:ranidx = SelectRandomCSIndex()
-  silent execute('colorscheme ' . g:colorschemes[l:ranidx])
-endfunction
-
-command! Randomcs :call SwitchCSRandom()
-
-call SwitchCSRandom()
+colorscheme nord
 
 " => Native Common Settings ----------------------------------------------{{{1
 set hlsearch                        "show highlight
