@@ -58,7 +58,6 @@ if s:initial_startup
 endif
 
 au! BufNewFile,BufRead *.vindrc set filetype=vim
-au! BufNewFile,BufRead *.py IndentGuidesEnable
 
 " => Plugin Options -------------------------------------------------{{{1
 " vim-sort-include
