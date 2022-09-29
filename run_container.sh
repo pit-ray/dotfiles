@@ -15,9 +15,12 @@ docker run \
   -it -d \
   --gpus all \
   --name $container_name \
+  -e TZ=Asia/Tokyo \
+  -p 6006:6006 \
   -v /mnt/d/datasets:/root/work/data \
   -v /mnt/d/out:/root/work/outputs \
   -v $current_dir:/root/work \
+  -v $HOME/.ssh:/root/.ssh \
   -w /root/work \
   --shm-size=12g \
   $image_name \
