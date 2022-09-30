@@ -12,6 +12,7 @@ RUN apt-get install -y \
   python3-pip \
   python3-tk \
   python3-dev \
+  python3-vent \
   python-is-python3 \
   libgl1-mesa-dev
 
