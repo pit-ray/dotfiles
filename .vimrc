@@ -42,7 +42,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'vhdirk/vim-cmake', {'for': ['c', 'cpp']}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
-Plug 'nathanaelkane/vim-indent-guides'
+" Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'pit-ray/vim-convcalc'
 
 " Colorschemes
@@ -163,8 +163,10 @@ endif
 set undodir=$VIMHOME                "infinity undo
 
 " => Native GUI settings -------------------------------------------------{{{1
-set guioptions-=m                   "disable gui menubar
-set guioptions-=T                   "disable gui toolbar
+if has('gui_running')
+  set guioptions-=m                   "disable gui menubar
+  set guioptions-=T                   "disable gui toolbar
+endif
 set guifont=Consolas:h8
 
 " => My bindings ---------------------------------------------------------{{{1
