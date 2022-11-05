@@ -5,22 +5,22 @@ set nocompatible
 set fileencodings=utf-8,cp932,euc-jp,iso-20220-jp,default,latin
 scriptencoding
 
-set pythonthreedll=C:/Python37/python37.dll
-" set pythonthreedll="C:\Program Files\Python36\python36.dll"
+if !has('nvim')
+  set pythonthreedll=C:/Python37/python37.dll
+endif
 
 " => Common bindings --------------------------------------------------{{{1
 let mapleader = "\<space>"
 
 " => Install plugins --------------------------------------------------{{{1
 let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
-let s:initial_startup = empty(glob($VIMHOME . '/autoload/plug.vim'))
-if s:initial_startup
-  call system('curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
-  exe('so ' . $VIMHOME . '/autoload/plug.vim')
+if empty(glob($VIMHOME . '/autoload/plug.vim'))
+  exe('term curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
+  au! VimEnter * PlugInstall --sync | so $MYVIMRC
 endif
-au! VimEnter * PlugInstall --sync | so $MYVIMRC
 
 call plug#begin($VIMHOME . '/plugged')
+
 " Stable
 Plug 'agatan/vim-sort-include'
 Plug 'cespare/vim-toml', {'for': 'toml'}
@@ -42,8 +42,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'vhdirk/vim-cmake', {'for': ['c', 'cpp']}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
-" Plug 'nathanaelkane/vim-indent-guides'
-" Plug 'pit-ray/vim-convcalc'
+Plug 'mattn/vim-notification'
 
 " Colorschemes
 Plug 'sainnhe/gruvbox-material'
@@ -53,9 +52,8 @@ Plug 'sonph/onehalf', {'rtp': 'vim'}
 Plug 'arcticicestudio/nord-vim'
 call plug#end()
 
-if s:initial_startup
-  PlugInstall
-endif
+command! So so<space>$MYVIMRC
+command! Update PlugInstall | VimspectorInstall
 
 au! BufNewFile,BufRead *.vindrc set filetype=vim
 
@@ -66,6 +64,8 @@ au! BufWritePre *.{c,cpp,h,hpp,cc} SortInclude
 "vim-lsp
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_log_verbose = 0
+let g:lsp_diagnostics_float_cursor = 0
+let g:lsp_diagnostics_float_delay = 500
 
 "vim-lsp-settings
 let g:lsp_settings_root_markers = ['.git']
@@ -91,13 +91,31 @@ nmap t <Plug>(easymotion-w)
 nmap T <Plug>(easymotion-b)
 nmap s <Plug>(easymotion-s2)
 
-if has('python')
-  PlugInstall 'puremourning/vimspector'
+function! EnableVimspector() abort
+  let l:py3_dll = system('cmd /c where.exe python3.dll')
+  let l:py3_dll = substitute(l:py3_dll, '/', '\', 'g')
+
+  echo 'Detected Python module: ' . l:py3_dll
+
+  let l:base = join(split(l:py3_dll, '\')[0:-2], '\')
+  let l:py3 = l:base . '\python'
+  let l:choice = confirm('Can install the neovim library into ' . l:py3 . '?', "&Yes\n&No")
+  if l:choice == 1
+    call system(l:py3 . ' -m pip install neovim')
+  endif
+
+  call execute('set pythonthreedll=' . l:py3_dll)
+
+  call plug#begin()
+  Plug 'puremourning/vimspector'
+  call plug#end()
 
   " vimspector
   let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
   let g:vimspector_install_gadgets = ['debugpy', 'vscode-cpptools', 'CodeLLDB']
-endif
+endfunction
+
+command! EnableVimspector :call EnableVimspector()
 
 
 " => Color Scheme --------------------------------------------------{{{1
@@ -118,7 +136,28 @@ if has('syntax')
   au! VimEnter,WinEnter * match FullWidthSpace /　/
 endif
 
-colorscheme nord
+" Switch colorscheme
+let g:colorschemes = [
+  "\ 'gruvbox-material',
+  "\ 'tokyonight',
+  "\ 'seoul256',
+  "\ 'onehalfdark',
+  \ 'nord'
+  \ ]
+let g:seed = srand()
+
+function! SelectRandomCSIndex() abort
+  return rand(g:seed) % len(g:colorschemes)
+endfunction
+
+function! SwitchCSRandom() abort
+  let l:ranidx = SelectRandomCSIndex()
+  silent execute('colorscheme ' . g:colorschemes[l:ranidx])
+endfunction
+
+command! Randomcs :call SwitchCSRandom()
+
+call SwitchCSRandom()
 
 " => Native Common Settings ----------------------------------------------{{{1
 set hlsearch                        "show highlight
@@ -131,6 +170,8 @@ if has('gui_running') && has('vim_starting')
   set lines=32                        "initial window height
   set columns=128                     "initial window width
 endif
+
+set pumheight=10                    "height of popup menu
 
 "indent
 filetype plugin indent on           "detect filetype
@@ -149,7 +190,6 @@ set nowrap                          "not wrap a long line
 set nobackup                        "not make backup files
 set noswapfile                      "not make swap files
 set backspace=indent,eol,start      "behavior of back space
-set clipboard=unnamed,autoselect    "copy to OS's clipboard
 set wildmenu                        "more informational completion
 set wildmode=list:longest,full      "wildmenu's behavior
 
@@ -158,15 +198,14 @@ set noerrorbells                    "disable error beep
 
 if has('win32')
   set shell=powershell
+  set clipboard=unnamed,autoselect    "copy to OS's clipboard
 endif
 
 set undodir=$VIMHOME                "infinity undo
 
 " => Native GUI settings -------------------------------------------------{{{1
-if has('gui_running')
-  set guioptions-=m                   "disable gui menubar
-  set guioptions-=T                   "disable gui toolbar
-endif
+set guioptions-=m                   "disable gui menubar
+set guioptions-=T                   "disable gui toolbar
 set guifont=Consolas:h8
 
 " => My bindings ---------------------------------------------------------{{{1
