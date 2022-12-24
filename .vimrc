@@ -13,11 +13,8 @@ endif
 let mapleader = "\<space>"
 
 " => Install plugins --------------------------------------------------{{{1
-let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
-if empty(glob($VIMHOME . '/autoload/plug.vim'))
-  exe('term curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
-  au! VimEnter * PlugInstall --sync | so $MYVIMRC
-else
+
+function! s:init() abort
   call plug#begin($VIMHOME . '/plugged')
 
   " Stable
@@ -133,7 +130,18 @@ else
   endif
 
   colorscheme nord
+endfunction
+
+let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
+if empty(glob($VIMHOME . '/autoload/plug.vim'))
+  exe('term curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
+  exe('source ' . $MYVIMRC)
+  au! VimEnter * PlugInstall --sync | so $MYVIMRC
+  au! VimEnter * call s:init()
+else
+  call s:init()
 endif
+
 
 " => Native Common Settings ----------------------------------------------{{{1
 set hlsearch                        "show highlight
