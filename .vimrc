@@ -115,7 +115,7 @@ else
   endfunction
 
   command! EnableVimspector :call EnableVimspector()
-endif()
+endif
 
 
 " => Color Scheme --------------------------------------------------{{{1
