@@ -115,26 +115,25 @@ else
   endfunction
 
   command! EnableVimspector :call EnableVimspector()
+
+  " => Color Scheme --------------------------------------------------{{{1
+  syntax enable
+  set background=dark
+  if has('termguicolors')
+    set termguicolors
+  endif
+
+  " ==> Each settings
+  let g:gruvbox_material_background = 'soft'
+  let g:airline_theem = 'gruvbox_material'
+
+  if has('syntax')
+    au! Colorscheme * highlight FullWidthSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+    au! VimEnter,WinEnter * match FullWidthSpace /　/
+  endif
+
+  colorscheme nord
 endif
-
-
-" => Color Scheme --------------------------------------------------{{{1
-syntax enable
-set background=dark
-if has('termguicolors')
-  set termguicolors
-endif
-
-" ==> Each settings
-let g:gruvbox_material_background = 'soft'
-let g:airline_theem = 'gruvbox_material'
-
-if has('syntax')
-  au! Colorscheme * highlight FullWidthSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-  au! VimEnter,WinEnter * match FullWidthSpace /　/
-endif
-
-colorscheme nord
 
 " => Native Common Settings ----------------------------------------------{{{1
 set hlsearch                        "show highlight
