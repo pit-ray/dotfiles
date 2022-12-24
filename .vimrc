@@ -17,105 +17,105 @@ let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
 if empty(glob($VIMHOME . '/autoload/plug.vim'))
   exe('term curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
   au! VimEnter * PlugInstall --sync | so $MYVIMRC
-endif
+else
+  call plug#begin($VIMHOME . '/plugged')
 
-call plug#begin($VIMHOME . '/plugged')
+  " Stable
+  Plug 'agatan/vim-sort-include'
+  Plug 'cespare/vim-toml', {'for': 'toml'}
+  Plug 'ctrlpvim/ctrlp.vim'
+  Plug 'mattn/vim-gist'
+  Plug 'mattn/webapi-vim'
+  Plug 'easymotion/vim-easymotion'
+  Plug 'junegunn/vim-easy-align'
+  Plug 'mattn/emmet-vim', {'for': 'html'}
+  Plug 'mattn/vim-lsp-settings'
+  Plug 'mhinz/vim-startify'
+  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+  Plug 'prabirshrestha/asyncomplete.vim'
+  Plug 'prabirshrestha/vim-lsp'
+  Plug 'simeji/winresizer'
+  Plug 'skywind3000/asyncrun.vim'
+  Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-vinegar'
+  Plug 'vhdirk/vim-cmake', {'for': ['c', 'cpp']}
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
+  Plug 'mattn/vim-notification'
 
-" Stable
-Plug 'agatan/vim-sort-include'
-Plug 'cespare/vim-toml', {'for': 'toml'}
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'mattn/vim-gist'
-Plug 'mattn/webapi-vim'
-Plug 'easymotion/vim-easymotion'
-Plug 'junegunn/vim-easy-align'
-Plug 'mattn/emmet-vim', {'for': 'html'}
-Plug 'mattn/vim-lsp-settings'
-Plug 'mhinz/vim-startify'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'simeji/winresizer'
-Plug 'skywind3000/asyncrun.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-vinegar'
-Plug 'vhdirk/vim-cmake', {'for': ['c', 'cpp']}
-Plug 'vim-airline/vim-airline'
-Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
-Plug 'mattn/vim-notification'
-
-" Colorschemes
-Plug 'sainnhe/gruvbox-material'
-Plug 'ghifarit53/tokyonight-vim'
-Plug 'junegunn/seoul256.vim'
-Plug 'sonph/onehalf', {'rtp': 'vim'}
-Plug 'arcticicestudio/nord-vim'
-call plug#end()
-
-command! So so<space>$MYVIMRC
-command! Update PlugInstall | VimspectorInstall
-
-au! BufNewFile,BufRead *.vindrc set filetype=vim
-
-" => Plugin Options -------------------------------------------------{{{1
-" vim-sort-include
-au! BufWritePre *.{c,cpp,h,hpp,cc} SortInclude
-
-"vim-lsp
-let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_log_verbose = 0
-let g:lsp_diagnostics_float_cursor = 0
-let g:lsp_diagnostics_float_delay = 500
-
-"vim-lsp-settings
-let g:lsp_settings_root_markers = ['.git']
-let g:lsp_settings_servers_dir  = $VIMHOME . '/vim-lsp-settings/servers'
-command! Def sp | LspDefinition
-command! Dec sp | LspDeclaration
-
-"vim-vinegar
-let g:NERDTreeHijackNetrw = 0
-
-"ctrlp
-let g:ctrlp_working_path_mode = 'ra'
-
-"vim-easy-align
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
-command! -range Eqga <line1>,<line2>EasyAlign<Space>-=
-
-"vim-easymotion
-nmap f <Plug>(easymotion-f)
-nmap F <Plug>(easymotion-overwin-f)
-nmap t <Plug>(easymotion-w)
-nmap T <Plug>(easymotion-b)
-nmap s <Plug>(easymotion-s2)
-
-function! EnableVimspector() abort
-  let l:py3_dll = system('cmd /c where.exe python3.dll')
-  let l:py3_dll = substitute(l:py3_dll, '/', '\', 'g')
-
-  echo 'Detected Python module: ' . l:py3_dll
-
-  let l:base = join(split(l:py3_dll, '\')[0:-2], '\')
-  let l:py3 = l:base . '\python'
-  let l:choice = confirm('Can install the neovim library into ' . l:py3 . '?', "&Yes\n&No")
-  if l:choice == 1
-    call system(l:py3 . ' -m pip install neovim')
-  endif
-
-  call execute('set pythonthreedll=' . l:py3_dll)
-
-  call plug#begin()
-  Plug 'puremourning/vimspector'
+  " Colorschemes
+  Plug 'sainnhe/gruvbox-material'
+  Plug 'ghifarit53/tokyonight-vim'
+  Plug 'junegunn/seoul256.vim'
+  Plug 'sonph/onehalf', {'rtp': 'vim'}
+  Plug 'arcticicestudio/nord-vim'
   call plug#end()
 
-  " vimspector
-  let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
-  let g:vimspector_install_gadgets = ['debugpy', 'vscode-cpptools', 'CodeLLDB']
-endfunction
+  command! So so<space>$MYVIMRC
+  command! Update PlugInstall | VimspectorInstall
 
-command! EnableVimspector :call EnableVimspector()
+  au! BufNewFile,BufRead *.vindrc set filetype=vim
+
+  " => Plugin Options -------------------------------------------------{{{1
+  " vim-sort-include
+  au! BufWritePre *.{c,cpp,h,hpp,cc} SortInclude
+
+  "vim-lsp
+  let g:lsp_diagnostics_echo_cursor = 1
+  let g:lsp_log_verbose = 0
+  let g:lsp_diagnostics_float_cursor = 0
+  let g:lsp_diagnostics_float_delay = 500
+
+  "vim-lsp-settings
+  let g:lsp_settings_root_markers = ['.git']
+  let g:lsp_settings_servers_dir  = $VIMHOME . '/vim-lsp-settings/servers'
+  command! Def sp | LspDefinition
+  command! Dec sp | LspDeclaration
+
+  "vim-vinegar
+  let g:NERDTreeHijackNetrw = 0
+
+  "ctrlp
+  let g:ctrlp_working_path_mode = 'ra'
+
+  "vim-easy-align
+  xmap ga <Plug>(EasyAlign)
+  nmap ga <Plug>(EasyAlign)
+  command! -range Eqga <line1>,<line2>EasyAlign<Space>-=
+
+  "vim-easymotion
+  nmap f <Plug>(easymotion-f)
+  nmap F <Plug>(easymotion-overwin-f)
+  nmap t <Plug>(easymotion-w)
+  nmap T <Plug>(easymotion-b)
+  nmap s <Plug>(easymotion-s2)
+
+  function! EnableVimspector() abort
+    let l:py3_dll = system('cmd /c where.exe python3.dll')
+    let l:py3_dll = substitute(l:py3_dll, '/', '\', 'g')
+
+    echo 'Detected Python module: ' . l:py3_dll
+
+    let l:base = join(split(l:py3_dll, '\')[0:-2], '\')
+    let l:py3 = l:base . '\python'
+    let l:choice = confirm('Can install the neovim library into ' . l:py3 . '?', "&Yes\n&No")
+    if l:choice == 1
+      call system(l:py3 . ' -m pip install neovim')
+    endif
+
+    call execute('set pythonthreedll=' . l:py3_dll)
+
+    call plug#begin()
+    Plug 'puremourning/vimspector'
+    call plug#end()
+
+    " vimspector
+    let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+    let g:vimspector_install_gadgets = ['debugpy', 'vscode-cpptools', 'CodeLLDB']
+  endfunction
+
+  command! EnableVimspector :call EnableVimspector()
+endif()
 
 
 " => Color Scheme --------------------------------------------------{{{1
@@ -129,35 +129,12 @@ endif
 let g:gruvbox_material_background = 'soft'
 let g:airline_theem = 'gruvbox_material'
 
-let g:tokyonight_style = 'storm'
-
 if has('syntax')
   au! Colorscheme * highlight FullWidthSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
   au! VimEnter,WinEnter * match FullWidthSpace /　/
 endif
 
-" Switch colorscheme
-let g:colorschemes = [
-  "\ 'gruvbox-material',
-  "\ 'tokyonight',
-  "\ 'seoul256',
-  "\ 'onehalfdark',
-  \ 'nord'
-  \ ]
-let g:seed = srand()
-
-function! SelectRandomCSIndex() abort
-  return rand(g:seed) % len(g:colorschemes)
-endfunction
-
-function! SwitchCSRandom() abort
-  let l:ranidx = SelectRandomCSIndex()
-  silent execute('colorscheme ' . g:colorschemes[l:ranidx])
-endfunction
-
-command! Randomcs :call SwitchCSRandom()
-
-call SwitchCSRandom()
+colorscheme nord
 
 " => Native Common Settings ----------------------------------------------{{{1
 set hlsearch                        "show highlight

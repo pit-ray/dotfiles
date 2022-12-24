@@ -12,7 +12,7 @@ RUN apt-get install -y \
   python3-pip \
   python3-tk \
   python3-dev \
-  python3-vent \
+  python3-venv \
   python-is-python3 \
   libgl1-mesa-dev
 
@@ -25,9 +25,8 @@ RUN ./configure --with-features=huge --enable-fail-if-missing --enable-python3in
 RUN make -j4 ; make install
 WORKDIR /
 
-# Setup .vimrc for Vim
-COPY .vimrc /root/.vimrc
-RUN vim -c "qa!"
+COPY setup_vim.sh /root/setup_vim.sh
+RUN chmod u+x /root/setup_vim.sh
 
 RUN pip3 install pip --upgrade
 RUN pip3 install \

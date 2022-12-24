@@ -21,6 +21,7 @@ docker run \
   -v /dev/shm:/dev/shm \
   -v $current_dir:/root/work \
   -v $HOME/.ssh:/root/.ssh \
+  -v $HOME/.gitconfig:/etc/gitconfig \
   -w /root/work \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
@@ -30,4 +31,7 @@ docker run \
   bash
 
 docker start $container_name
+docker exec -it $container_name /root/setup_vim.sh
+docker exec -it $container_name pip install --upgrade pip
+docker exec -it $container_name pip install -r requirements.txt
 docker exec -it $container_name bash
