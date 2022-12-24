@@ -14,10 +14,11 @@ let mapleader = "\<space>"
 
 " => Install plugins --------------------------------------------------{{{1
 let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
+let s:init = 0
 if empty(glob($VIMHOME . '/autoload/plug.vim'))
   call system('curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
   exe('source ' . $VIMHOME . '/autoload/plug.vim')
-  au! VimEnter * PlugInstall --sync | so $MYVIMRC
+  let s:init = 1
 endif
 
 call plug#begin($VIMHOME . '/plugged')
@@ -118,6 +119,10 @@ endfunction
 
 command! EnableVimspector :call EnableVimspector()
 
+if s:init
+  exe('PlugInstall --sync')
+endif
+
 " => Color Scheme --------------------------------------------------{{{1
 syntax enable
 set background=dark
@@ -134,7 +139,7 @@ if has('syntax')
   au! VimEnter,WinEnter * match FullWidthSpace /　/
 endif
 
-au! VimEnter * colorscheme nord
+colorscheme nord
 
 " => Native Common Settings ----------------------------------------------{{{1
 set hlsearch                        "show highlight
