@@ -15,7 +15,7 @@ let mapleader = "\<space>"
 " => Install plugins --------------------------------------------------{{{1
 let $VIMHOME = $HOME . (has('win32') ? '/vimfiles' : '/.vim')
 if empty(glob($VIMHOME . '/autoload/plug.vim'))
-  exe('term curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
+  call system('curl -fLo ' . $VIMHOME . '/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim')
   exe('source ' . $VIMHOME . '/autoload/plug.vim')
   au! VimEnter * PlugInstall --sync | so $MYVIMRC
 endif
