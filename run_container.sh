@@ -16,16 +16,18 @@ docker run \
   --gpus all \
   --name $container_name \
   -e TZ=Asia/Tokyo \
-  -v /mnt/e/datasets:/root/work/data \
+  -v /mnt/e/datasets:/root/work/data:ro \
   -v /mnt/d/out:/root/work/outputs \
   -v /dev/shm:/dev/shm \
   -v $current_dir:/root/work \
-  -p 6006:6006 \
   -v $HOME/.ssh:/root/.ssh \
   -w /root/work \
+  -e DISPLAY=$DISPLAY \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v $HOME/.Xauthority:/root/.Xauthority \
+  --net host \
   $image_name \
   bash
-  #-v /etc/group:/etc/group:ro \
-  #-v /etc/passwd:/etc/passwd:ro \
-  #-u $(id -u $USER):$(id -g $USER) \
-  # --shm-size=12g \
+
+docker start $container_name
+docker exec -it $container_name bash
