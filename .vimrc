@@ -134,7 +134,7 @@ if has('syntax')
   au! VimEnter,WinEnter * match FullWidthSpace /　/
 endif
 
-colorscheme nord
+au! VimEnter * colorscheme nord
 
 " => Native Common Settings ----------------------------------------------{{{1
 set hlsearch                        "show highlight
