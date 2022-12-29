@@ -68,6 +68,7 @@ let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_log_verbose = 0
 let g:lsp_diagnostics_float_cursor = 0
 let g:lsp_diagnostics_float_delay = 500
+let g:lsp_diagnostics_virtual_text_enabled = 0
 
 "vim-lsp-settings
 let g:lsp_settings_root_markers = ['.git']
