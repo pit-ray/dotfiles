@@ -18,6 +18,7 @@ docker run \
   -e TZ=Asia/Tokyo \
   -v /mnt/e/datasets:/root/work/data:ro \
   -v /mnt/d/out:/root/work/outputs \
+  -v /mnt/d/out/mlruns:/root/work/mlruns \
   -v /dev/shm:/dev/shm \
   -v $current_dir:/root/work \
   -v $HOME/.ssh:/root/.ssh \

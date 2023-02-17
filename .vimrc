@@ -216,6 +216,7 @@ if has('terminal')
   tnoremap <c-right> <c-w><c-l>
 
   tnoremap <c-i> <c-w><s-n>
+  tnoremap <tab> <tab>
 endif
 
 "let g:termdebug_use_prompt = 0
