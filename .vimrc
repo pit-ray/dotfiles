@@ -218,6 +218,9 @@ if has('terminal')
 
   tnoremap <c-i> <c-w><s-n>
   tnoremap <tab> <tab>
+
+  set tws=15x0
+  cabbrev bterm below term
 endif
 
 "let g:termdebug_use_prompt = 0
