@@ -1,22 +1,31 @@
-set autofocus_textarea
+version big
+
+set noautofocus_textarea
 set shell = cmd
 set cmd_fontsize = 14
-set cmd_roughpos = LowerLeft
-set cmd_maxchar = 100
 
-rmap <capslock> <ctrl>
+set gridmove_size=24x24
 
-imap <capslock> <f20>
-inoremap <f20> to_edi_normal
+imap <kana> {<f15>}
 
-imap <kana> <f13>
-inoremap <f13> to_instant_gui_normal
+" <ctrl-kana>
+imap <ctrl-f15> <easyclick><click_left>
 
-imap <nocvt> <f14>
-inoremap <f14> easy_click_left
+" <kana>
+imap <f15> <gridmove><click_left>
 
-imap <cvt> <f15>
-inoremap <f15> easy_click_right
+imap <rctrl> <to_gui_normal>
 
-imap <app> <f16>
-inoremap <f16> window_resizer
+" To avoid colisions of keybindings
+autocmd AppEnter *vim.exe <to_resident>
+autocmd AppLeave *vim.exe <to_insert>
+
+" Gaming
+autocmd AppEnter steam.exe <to_resident>
+autocmd AppLeave steam.exe <to_insert>
+
+" To use Chrome Remote Desktop
+autocmd AppEnter chrome.exe <to_resident>
+autocmd AppLeave chrome.exe <to_insert>
+
+autocmd AppEnter notepad.exe <to_edi_normal>
