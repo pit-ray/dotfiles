@@ -21,7 +21,7 @@ choco install dotfiles/choco.config -y
 
 3. Execute post-processing
 ```sh
-./dotfiles/setup.bat
+./windows/setup.bat
 ```
 
 ## Setup the environment for deep-learning on Ubuntu.
@@ -29,13 +29,13 @@ choco install dotfiles/choco.config -y
 1. build the docker image
 
 ```sh
-./dotfiles/build_image.sh dlenv
+./linux/build_image.sh dlenv
 ```
 
 2. run a container attaching the current working directory.
 
 ```sh
-./dotfiles/run_container.sh dlenv project-1
+./linux/run_container.sh dlenv project-1
 ```
 
 The current working directory is attached into `/root/work`.
