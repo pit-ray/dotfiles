@@ -1,20 +1,34 @@
 version big
 
-set noautofocus_textarea
+" Parameter Settings
 set shell = cmd
 set cmd_fontsize = 14
 
 set gridmove_size=24x24
 
+set noautofocus_textarea
+set uiacachebuild
+set uiacachebuild_lifetime = 1500
+set uiacachebuikd_staybegin = 1000
+set uiacachebuild_stayend = 2500
+
+" Low-level mappings
 imap <kana> {<f15>}
 
-" <ctrl-kana>
-imap <ctrl-f15> <easyclick><click_left>
+noremap <ctrl-shift-a> <easyclick_all><click_left>
+noremap <ctrl-shift-f> <easyclick><click_left>
+noremap <ctrl-shift-m> <gridmove><click_left>
+noremap <ctrl-shift-s> <switch_window><easyclick><click_left>
 
-" <kana>
-imap <f15> <gridmove><click_left>
+inoremap <ctrl-shift-a> <easyclick_all><click_left>
+inoremap <ctrl-shift-f> <easyclick><click_left>
+inoremap <ctrl-shift-m> <gridmove><click_left>
+inoremap <ctrl-shift-s> <switch_window><easyclick><click_left>
 
-imap <rctrl> <to_gui_normal>
+gnnoremap <ctrl-h> <move_window_left>
+gnnoremap <ctrl-l> <move_window_right>
+gnnoremap <ctrl-k> <move_window_up>
+gnnoremap <ctrl-j> <move_window_down>
 
 " To avoid colisions of keybindings
 autocmd AppEnter *vim.exe <to_resident>
@@ -25,7 +39,5 @@ autocmd AppEnter steam.exe <to_resident>
 autocmd AppLeave steam.exe <to_insert>
 
 " To use Chrome Remote Desktop
-autocmd AppEnter chrome.exe <to_resident>
-autocmd AppLeave chrome.exe <to_insert>
-
-autocmd AppEnter notepad.exe <to_edi_normal>
+" autocmd AppEnter chrome.exe <to_resident>
+" autocmd AppLeave chrome.exe <to_insert>
