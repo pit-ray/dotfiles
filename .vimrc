@@ -45,6 +45,7 @@ Plug 'vhdirk/vim-cmake', {'for': ['c', 'cpp']}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/nsis.vim', {'for': ['nsi', 'in']}
 Plug 'mattn/vim-notification'
+Plug 'pit-ray/vim-autograd', {'branch': 'vim9'}
 
 " Colorschemes
 Plug 'sainnhe/gruvbox-material'
@@ -189,7 +190,7 @@ set undodir=$VIMHOME                "infinity undo
 " => Native GUI settings -------------------------------------------------{{{1
 set guioptions-=m                   "disable gui menubar
 set guioptions-=T                   "disable gui toolbar
-set guifont=Consolas:h8
+set guifont=Consolas:h10
 
 " => My bindings ---------------------------------------------------------{{{1
 noremap <c-h> <c-w><c-h>
@@ -219,7 +220,6 @@ if has('terminal')
   tnoremap <c-i> <c-w><s-n>
   tnoremap <tab> <tab>
 
-  set tws=15x0
   cabbrev bterm below term
 endif
 
