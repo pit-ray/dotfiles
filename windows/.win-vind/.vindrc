@@ -6,7 +6,6 @@ set cmd_fontsize = 14
 
 set gridmove_size=24x24
 
-set noautofocus_textarea
 set uiacachebuild
 set uiacachebuild_lifetime = 1500
 set uiacachebuikd_staybegin = 1000
@@ -31,12 +30,12 @@ gnnoremap <ctrl-k> <move_window_up>
 gnnoremap <ctrl-j> <move_window_down>
 
 " To avoid colisions of keybindings
-autocmd AppEnter *vim.exe <to_resident>
-autocmd AppLeave *vim.exe <to_insert>
+autocmd AppEnter vim.exe <to_resident>
+autocmd AppLeave vim.exe <to_insert>
 
 " Gaming
-autocmd AppEnter steam.exe <to_resident>
-autocmd AppLeave steam.exe <to_insert>
+" autocmd AppEnter steam.exe <to_resident>
+" autocmd AppLeave steam.exe <to_insert>
 
 " To use Chrome Remote Desktop
 " autocmd AppEnter chrome.exe <to_resident>
